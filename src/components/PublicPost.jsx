@@ -7,6 +7,7 @@ import "./animation.css";
 
 function PublicPost({
   id,
+  userName,
   title,
   content,
   imageUrl,
@@ -304,6 +305,7 @@ function PublicPost({
       <div className="border-2 border-black flex items-center px-2 py-4">
         <div className="ppic mr-2 border-r-2 border-black">
           <img src={imageUrl} alt="profile" style={imgStyle} className="mr-1" />
+          <h3 className="text-center mt-4">{userName}</h3>
         </div>
 
         <div className="flex flex-col">
