@@ -11,27 +11,17 @@ function List() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-
         const user = JSON.parse(localStorage.getItem("user"));
-
-        if (!localStorage.getItem("user")) {
-          console.log("No user data found in localStorage");
-          return;
-        }
-
-        const userId = user.id;
-
-        if (userId) {
-          setUserId(userId);
-        }
+        const userId = user.user.id;
 
         const response = await fetch(`http://localhost:3004/users/${userId}`);
 
         if (response.ok) {
           const userData = await response.json();
           console.log("Fetched user data from API:", userData);
+          setUserId(userData.id);
           setLoggedIn(true);
-          fetchPosts(userData.id);
+          // fetchPosts(userData.id);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -41,26 +31,33 @@ function List() {
     fetchUserData();
   }, []);
 
+  useEffect(() => {
+    if (userId) {
+      const fetchPosts = async () => {
+        try {
 
-  const fetchPosts = async (userId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3004/posts/user/${userId}`
-      );
-      const data = await response.json();
-      console.log("Fetched posts data:", data);
-      if (Array.isArray(data)) {
-        setPosts(data);
-      } else {
-        console.log("Unexpected data format, setting posts to an empty array");
-        setPosts([]); // Ensure posts is always an array
-      }
-      setDisplayPosts(true);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      setPosts([]); // Ensure posts is always an array
+          const response = await fetch(
+            `http://localhost:3004/posts/user/${userId}`
+          );
+          const data = await response.json();
+          console.log("Fetched posts data:", data);
+          if (Array.isArray(data)) {
+            setPosts(data);
+          } else {
+            console.log(
+              "Unexpected data format, setting posts to an empty array"
+            );
+            setPosts([]); // Ensure posts is always an array
+          }
+          setDisplayPosts(true);
+        } catch (error) {
+          console.error("Error fetching posts:", error);
+          setPosts([]); // Ensure posts is always an array
+        }
+      };
+      fetchPosts();
     }
-  };
+  }, [userId]);
 
   return (
     <div className="min-h-full flex flex-col p-6 border-2 border-black mt-10 sm:mt-10 sm:mr-4 sm:p-2 md:p-4 lg:p-6">
@@ -70,7 +67,7 @@ function List() {
         <ul className="list-disc ml-4 mt-4 text-xl space-y-4 sm:mt-2 sm:text-lg sm:space-y-2 md:mt-4 md:text-xl md:space-y-4">
           {posts.slice(0, 5).map((post) => (
             <li key={post.id}>
-              <Link to={`/post/${post.id}`}>{post.content}</Link>
+              <Link to={`/post/${post.id}`}>{post.title}</Link>
             </li>
           ))}
         </ul>
