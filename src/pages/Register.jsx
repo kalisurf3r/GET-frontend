@@ -101,6 +101,7 @@ function Register() {
               type="username"
               id="newusername"
               name="username"
+              value={userName}
               className="border-2 border-black p-2 rounded-lg w-80 transition-transform duration-300 hover:scale-110  bg-zinc-300"
               placeholder="New Username"
               autoComplete="new-username"
@@ -113,6 +114,7 @@ function Register() {
               type="password"
               id="newpassword"
               name="password"
+              value={password}
               className="border-2 border-black p-2 rounded-lg w-80 transition-transform duration-300 hover:scale-110  bg-zinc-300"
               placeholder="New Password"
               autoComplete="new-password"
@@ -130,7 +132,7 @@ function Register() {
                     width="16"
                     height="16"
                     fill="currentColor"
-                    class="bi bi-circle"
+                    className="bi bi-circle"
                     viewBox="0 0 16 16"
                   >
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -149,7 +151,7 @@ function Register() {
                     width="16"
                     height="16"
                     fill="currentColor"
-                    class="bi bi-circle"
+                    className="bi bi-circle"
                     viewBox="0 0 16 16"
                   >
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -168,7 +170,7 @@ function Register() {
                     width="16"
                     height="16"
                     fill="currentColor"
-                    class="bi bi-circle"
+                    className="bi bi-circle"
                     viewBox="0 0 16 16"
                   >
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
