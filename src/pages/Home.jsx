@@ -114,6 +114,7 @@ function Home() {
                 cols="60"
                 value={note}
                 onChange={handleTextareaChange}
+                style={{ resize: 'none' }}
               ></textarea>
             </div>
 

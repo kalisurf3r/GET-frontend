@@ -71,7 +71,7 @@ function Navbar() {
               <img
                 src={profilePic}
                 alt="Profile Image"
-                className="w-8 h-8 rounded-full "
+                className="w-12 h-12 rounded-full "
                 onClick={handleProfile}
               />
             ) : (
