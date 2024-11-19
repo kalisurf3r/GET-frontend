@@ -154,11 +154,7 @@ function AllMyPosts(user) {
       return;
     }
 
-    const updatedData = {
-      userName: userData.userName,
-      password: userData.password,
-      profilePic: userData.profilePic,
-    };
+    const updatedData = {};
     if (userData.userName !== originalUserData.userName) {
       updatedData.userName = userData.userName;
     }
@@ -183,6 +179,11 @@ function AllMyPosts(user) {
       const id = user.user.id;
       const token = localStorage.getItem("token");
 
+      if (!token) {
+        throw new Error("No token found in localStorage");
+      }
+    
+
       console.log("Sending request to update user:", {
         id,
         token,
@@ -204,7 +205,7 @@ function AllMyPosts(user) {
       if (!response.ok) {
         const responseText = await response.text();
         console.log("Response text:", responseText);
-        throw new Error("Network response was not ok");
+        throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
       const data = await response.json();
