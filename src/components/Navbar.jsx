@@ -27,15 +27,12 @@ function Navbar() {
   };
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      if (parsedUser && parsedUser.user) {
-        setProfilePic(parsedUser.user.profilePic);
-        console.log(parsedUser.user.profilePic);
-        setUserId(parsedUser.user.id);
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.user) {
+        setProfilePic(user.user.profilePic);
+        console.log(user.profilePic);
+        setUserId(user.id);
         setLoggedIn(true);
-      }
     }
   }, [user]);
   const handleLogout = () => {
@@ -72,7 +69,7 @@ function Navbar() {
           {loggedIn ? (
             profilePic ? (
               <img
-                src={user.profilePic}
+                src={profilePic}
                 alt="Profile Image"
                 className="w-8 h-8 rounded-full "
                 onClick={handleProfile}

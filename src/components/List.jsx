@@ -12,13 +12,14 @@ function List() {
     const fetchUserData = async () => {
       try {
 
+        const user = JSON.parse(localStorage.getItem("user"));
+
         if (!localStorage.getItem("user")) {
           console.log("No user data found in localStorage");
           return;
         }
 
-        const user = JSON.parse(localStorage.getItem("user"));
-        const userId = user.user.id;
+        const userId = user.id;
 
         if (userId) {
           setUserId(userId);
