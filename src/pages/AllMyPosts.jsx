@@ -15,6 +15,7 @@ function AllMyPosts(user) {
   const [error, setError] = useState(null);
 
   // * updating user profile
+  const [newEmail, setNewEmail] = useState("");
   const [newUserName, setNewUserName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newProfilePic, setNewProfilePic] = useState("");
@@ -102,11 +103,13 @@ function AllMyPosts(user) {
   const [showSettings, setShowSettings] = useState(false);
   
   const [userData, setUserData] = useState({
+    email: "",
     userName: "",
     password: "",
     profilePic: "",
   });
   const [originalUserData, setOriginalUserData] = useState({
+    email: "",
     userName: "",
     password: "",
     profilePic: "",
@@ -155,6 +158,11 @@ function AllMyPosts(user) {
     }
 
     const updatedData = {};
+
+    if (userData.email !== originalUserData.email) {
+      updatedData.email = userData.email;
+    }
+
     if (userData.userName !== originalUserData.userName) {
       updatedData.userName = userData.userName;
     }
@@ -187,6 +195,7 @@ function AllMyPosts(user) {
       console.log("Sending request to update user:", {
         id,
         token,
+        email: userData.email,
         userName: userData.userName,
         profilePic: userData.profilePic,
       });
@@ -261,6 +270,15 @@ function AllMyPosts(user) {
                 onSubmit={handleSettingsSaveClick}
                 className="flex flex-col my-4"
               >
+                <label className="mb-2">
+                  Email: &nbsp;
+                  <input
+                    type="text"
+                    name="username"
+                    value={userData.email}
+                    onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                  />
+                </label>
                 <label className="mb-2">
                   Username: &nbsp;
                   <input

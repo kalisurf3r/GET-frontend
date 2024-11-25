@@ -13,6 +13,7 @@ function Register() {
     setProfilePic(url);
   };
 
+  const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -59,7 +60,7 @@ function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userName, password, profilePic }),
+        body: JSON.stringify({ email, userName, password, profilePic }),
       });
       const data = await response.json();
       const token = data.token;
@@ -108,6 +109,19 @@ function Register() {
             className="flex flex-col items-center mt-10"
             onSubmit={handleSubmit}
           >
+            <label htmlFor="email" className="text-xl mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="newemail"
+              name="email"
+              value={email}
+              className="mb-2 border-2 border-black p-2 rounded-lg w-80 transition-transform duration-300 hover:scale-110  bg-zinc-300"
+              placeholder="Your Email"
+              autoComplete="new-email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <label htmlFor="newusername" className="text-xl mb-2">
               Username
             </label>
