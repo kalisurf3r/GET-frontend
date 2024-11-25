@@ -94,6 +94,7 @@ function PublicDash() {
           <PublicPost
             key={post.id}
             id={post.id}
+            userId={post.User.id}
             userName={post.User.userName}
             title={post.title}
             content={post.content}

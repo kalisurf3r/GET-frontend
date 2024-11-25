@@ -1,8 +1,13 @@
 import UploadWidget from "../components/Cloudinary";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {Filter} from "bad-words";
+import DOMPurify from "dompurify";
 
 function Register() {
+
+  const filter = new Filter();
+
   const [profilePic, setProfilePic] = useState(null);
   const handleImageUpload = (url) => {
     setProfilePic(url);
@@ -19,6 +24,15 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // * sanitize username
+    const sanitizedUserName = DOMPurify.sanitize(userName);
+
+    // * check if username has profanity
+    if (filter.isProfane(sanitizedUserName)) {
+      alert("Username contains inappropriate language. Please choose another one.");
+      return;
+    }
 
     // * Check if username already exists
     const users = await getAllUsers();

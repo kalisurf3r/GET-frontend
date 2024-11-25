@@ -12,6 +12,7 @@ import Register from './pages/Register.jsx'
 import MyPostsSingle from './pages/MyPostsSingle.jsx'
 import AllMyPosts from './pages/AllMyPosts.jsx'
 import PublicDash from './pages/PublicDash.jsx'
+import ViewProfile from './pages/ViewProfiles.jsx'
 
 
 const router = createBrowserRouter([
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: '/public',
         element: <PublicDash />
+      },
+      {
+        path: '/profile/:id',
+        element: <ViewProfile />
       }
     ],
   },

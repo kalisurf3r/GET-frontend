@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import List from "../components/List";
 import Modal from "../components/Modal";
 import { set } from "@cloudinary/url-gen/actions/variable";
+import {Filter} from "bad-words";
+import DOMPurify from "dompurify";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,12 +80,19 @@ function Home() {
     }
   };
 
+  // * Filter out bad words & sanitize inputs
+  const filter = new Filter();
+
   const handleTextareaChange = (event) => {
-    setNote(event.target.value);
+    const sanitizedNote = DOMPurify.sanitize(event.target.value);
+    const filteredNote = filter.clean(sanitizedNote);
+    setNote(filteredNote);
   };
 
   const handleTitleChange = (e) => {
-    setTitle(e.target.value);
+    const sanitizedTitle = DOMPurify.sanitize(e.target.value);
+    const filteredTitle = filter.clean(sanitizedTitle);
+    setTitle(filteredTitle);
   };
 
   return (
