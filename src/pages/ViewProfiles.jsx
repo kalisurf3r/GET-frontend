@@ -109,110 +109,129 @@ function ViewProfile() {
 
   return (
     <div className="min-h-screen flex flex-col items-center">
+      <div className="flex justify-end w-full">
+        <button className="mr-20 mt-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            fill="currentColor"
+            class="bi bi-envelope-plus"
+            viewBox="0 0 16 16"
+          >
+            <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z" />
+            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5" />
+          </svg>
+        </button>
+      </div>
       <div className="flex">
         <h1 className="text-3xl text-white mt-4">{userData.userName}</h1>
-        <img
-          src={userData.imageUrl}
-          alt="profile"
-          className="w-20 h-20 rounded-full ml-4 mt-1"
-        />
+
+        {userData ? (
+  <img
+    src={userData.imageUrl === './avatar.png' ? '/avatar.png' : userData.imageUrl}
+    alt="profile"
+    className="w-20 h-20 rounded-full ml-4"
+  />
+) : (
+  <img
+    src="/avatar.png"
+    alt="profile"
+    className="w-20 h-20 rounded-full ml-4 mt-1"
+  />
+)}
       </div>
 
-      
-        <div className="flex flex-col items-center">
-          <p className="text-2xl mt-4">Posts:</p>
-          {posts.map((post) => (
-            <React.Fragment key={post.id}>
-              <div
-                
-                className="w-3/4 border-2 border-black border-dotted p-4 mb-6 mt-10"
+      <div className="flex flex-col items-center">
+        <p className="text-2xl mt-6">Posts:</p>
+        {posts.map((post) => (
+          <React.Fragment key={post.id}>
+            <div className="w-3/4 border-2 border-black border-dotted p-4 mb-6 mt-10">
+              <div className="flex justify-between border-2 border-black p-1">
+                <h1 className="ml-2">{post.title}</h1>
+              </div>
+              <p className="text-center mt-2">{post.content}</p>
+              <button
+                className="flex justify-content mx-auto"
+                onClick={() => toggleComments(post.id)}
               >
-                <div className="flex justify-between border-2 border-black p-1">
-                  <h1 className="ml-2">{post.title}</h1>
-                </div>
-                <p className="text-center mt-2">{post.content}</p>
-                <button
-                  className="flex justify-content mx-auto"
-                  onClick={() => toggleComments(post.id)}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  fill="currentColor"
+                  className="bi bi-body-text mt-2 mr-4 transition-transform duration-300 hover:scale-150"
+                  viewBox="0 0 16 16"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="28"
-                    height="28"
-                    fill="currentColor"
-                    className="bi bi-body-text mt-2 mr-4 transition-transform duration-300 hover:scale-150"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5m0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"
-                    />
-                  </svg>
-                </button>
-              </div>
+                  <path
+                    fillRule="evenodd"
+                    d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5m0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"
+                  />
+                </svg>
+              </button>
+            </div>
 
-              <div
-                className="commentcontainer w-full flex justify-center items-center"
-                style={{ maxHeight: "400px", overflowY: "auto" }}
-              >
-                {commentsVisible[post.id] && (
-                  <div className="mt-4">
-                    <ul className="max-w-xs w-full">
-                      <TransitionGroup>
-                        {comments[post.id].slice(-5).map((comment, index) => (
-                          <CSSTransition
+            <div
+              className="commentcontainer w-full flex justify-center items-center"
+              style={{ maxHeight: "400px", overflowY: "auto" }}
+            >
+              {commentsVisible[post.id] && (
+                <div className="mt-4">
+                  <ul className="max-w-xs w-full">
+                    <TransitionGroup>
+                      {comments[post.id].slice(-5).map((comment, index) => (
+                        <CSSTransition
+                          key={comment.id}
+                          timeout={500}
+                          classNames="comment"
+                        >
+                          <li
                             key={comment.id}
-                            timeout={500}
-                            classNames="comment"
+                            className="comment-item border-t border-gray-300 py-1 flex items-center"
                           >
-                            <li
-                              key={comment.id}
-                              className="comment-item border-t border-gray-300 py-1 flex items-center"
-                            >
-                              <img
-                                src={comment.User.profilePic}
-                                alt="Profile"
-                                className="profile-pic mr-4 rounded-full"
-                                style={commentImgStyle}
-                              />
+                            <img
+                              src={comment.User.profilePic ? comment.User.profilePic : '/avatar.png'}
+                              alt="Profile"
+                              className="profile-pic mr-4 rounded-full"
+                              style={commentImgStyle}
+                            />
 
-                              <div>
-                                <h4 className="font-semibold">
-                                  {comment.User.userName}
-                                </h4>
-                                <p>{comment.content}</p>
-                              </div>
+                            <div>
+                              <h4 className="font-semibold">
+                                {comment.User.userName}
+                              </h4>
+                              <p>{comment.content}</p>
+                            </div>
 
-                              <div className="votes ml-8 flex items-center">
-                                <span className="mr-1">{comment.likes}</span>
+                            <div className="votes ml-8 flex items-center">
+                              <span className="mr-1">{comment.likes}</span>
 
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="16"
-                                  height="16"
-                                  fill="currentColor"
-                                  className="bi bi-heart-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
-                                  />
-                                </svg>
-                              </div>
-                            </li>
-                          </CSSTransition>
-                        ))}
-                      </TransitionGroup>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </React.Fragment>
-          ))}
-        </div>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                className="bi bi-heart-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+                                />
+                              </svg>
+                            </div>
+                          </li>
+                        </CSSTransition>
+                      ))}
+                    </TransitionGroup>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </React.Fragment>
+        ))}
       </div>
-    
+    </div>
   );
 }
 
