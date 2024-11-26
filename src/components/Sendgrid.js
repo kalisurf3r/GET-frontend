@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+console.log('SENDGRID_API_KEY:', process.env.SENDGRID_API_KEY);
 const msg = {
   to: 'ayalaarturo925@gmail.com', // Change to your recipient
   from: 'ayalaarturo925@gmail.com', // Change to your verified sender
@@ -17,5 +18,5 @@ sgMail
     console.log('Email sent')
   })
   .catch((error) => {
-    console.error(error)
+    console.error(error.response.body.errors)
   })
