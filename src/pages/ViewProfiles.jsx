@@ -3,6 +3,8 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "../components/animation.css";
+import sendEmail from "../components/Sendgrid";
+import Modal from "../components/Modal";
 
 function ViewProfile() {
   const location = useLocation();
@@ -10,6 +12,7 @@ function ViewProfile() {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [commentsVisible, setCommentsVisible] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
 
   const commentImgStyle = {
     width: "60px",
@@ -103,6 +106,103 @@ function ViewProfile() {
     }));
   };
 
+  // * send email
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  useEffect(() => {
+    checkSubscription();
+  }, []);
+
+  const checkSubscription = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const id = user.user.id;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `http://localhost:3004/users/${id}/subscriptions`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("Fetched subscription data:", data);
+      const isUserSubscribed = data.some(
+        (sub) => sub.subscribedTo === userData.userId
+      );
+      setIsSubscribed(isUserSubscribed);
+    } catch (error) {
+      console.error("Error fetching subscription data:", error);
+    }
+  };
+
+  const handleSubscribe = () => {
+    const subscribeUser = async () => {
+      const subscribedTo = userData.userId;
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(
+          `http://localhost:3004/users/subscribe/${subscribedTo}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ subscribed: true }),
+          }
+        );
+
+        if (response.ok) {
+          console.log("Subscribed successfully");
+          setIsSubscribed(true);
+          setModalVisible(false);
+        } else {
+          console.error("Failed to subscribe");
+        }
+      } catch (error) {
+        console.error("Error subscribing user:", error);
+      }
+    };
+    subscribeUser();
+    setModalVisible(false);
+  };
+
+  // * unsubscribe user
+  const handleUnsubscribe = async () => {
+    const subscribedTo = userData.userId;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `http://localhost:3004/users/unsubscribe/${subscribedTo}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        console.log("Unsubscribed successfully");
+        setIsSubscribed(false);
+        setModalVisible(false);
+      } else {
+        console.error("Failed to unsubscribe");
+      }
+    } catch (error) {
+      console.error("Error unsubscribing user:", error);
+    }
+  };
+
   if (!userData) {
     return <p>Loading...</p>;
   }
@@ -110,36 +210,85 @@ function ViewProfile() {
   return (
     <div className="min-h-screen flex flex-col items-center">
       <div className="flex justify-end w-full">
-        <button className="mr-20 mt-4">
+        <button className="mr-20 mt-4" onClick={toggleModal}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="40"
             height="40"
             fill="currentColor"
-            class="bi bi-envelope-plus"
+            className="bi bi-envelope-plus"
             viewBox="0 0 16 16"
           >
             <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z" />
             <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5" />
           </svg>
         </button>
+
+        <Modal isOpen={modalVisible} onClose={toggleModal}>
+          <div style={{ zIndex: 1000 }}>
+            <div className="mb-4" onClick={toggleModal}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-x-lg"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+              </svg>
+            </div>
+
+            {isSubscribed === false ? (
+              <div>
+                <h1 className="mb-2 text-center">
+                  Receive email notifications?
+                </h1>
+                <h1 className="mb-2 text-center">
+                  Stay up to date with new posts from{" "}
+                  <strong>{userData.userName}</strong>
+                </h1>
+                <button
+                  onClick={handleSubscribe}
+                  className="rounded-full px-4 py-2 bg-blue-500 text-white flex justify-center mx-auto"
+                >
+                  Enroll
+                </button>
+              </div>
+            ) : (
+              <div>
+                <h1 className="mb-2 text-center">
+                  Unsubscribe from email notifications?
+                </h1>
+                <button 
+                onClick={handleUnsubscribe}
+                className="rounded-full px-4 py-2 bg-red-500 text-white flex justify-center mx-auto"
+                >Unsubscribe</button>
+              </div>
+            )}
+          </div>
+        </Modal>
       </div>
       <div className="flex">
         <h1 className="text-3xl text-white mt-4">{userData.userName}</h1>
 
         {userData ? (
-  <img
-    src={userData.imageUrl === './avatar.png' ? '/avatar.png' : userData.imageUrl}
-    alt="profile"
-    className="w-20 h-20 rounded-full ml-4"
-  />
-) : (
-  <img
-    src="/avatar.png"
-    alt="profile"
-    className="w-20 h-20 rounded-full ml-4 mt-1"
-  />
-)}
+          <img
+            src={
+              userData.imageUrl === "./avatar.png"
+                ? "/avatar.png"
+                : userData.imageUrl
+            }
+            alt="profile"
+            className="w-20 h-20 rounded-full ml-4"
+          />
+        ) : (
+          <img
+            src="/avatar.png"
+            alt="profile"
+            className="w-20 h-20 rounded-full ml-4 mt-1"
+          />
+        )}
       </div>
 
       <div className="flex flex-col items-center">
@@ -190,7 +339,11 @@ function ViewProfile() {
                             className="comment-item border-t border-gray-300 py-1 flex items-center"
                           >
                             <img
-                              src={comment.User.profilePic ? comment.User.profilePic : '/avatar.png'}
+                              src={
+                                comment.User.profilePic
+                                  ? comment.User.profilePic
+                                  : "/avatar.png"
+                              }
                               alt="Profile"
                               className="profile-pic mr-4 rounded-full"
                               style={commentImgStyle}

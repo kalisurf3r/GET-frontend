@@ -1,22 +1,26 @@
 import sgMail from '@sendgrid/mail'; 
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
+// dotenv.config();
 
-dotenv.config();
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-console.log('SENDGRID_API_KEY:', process.env.SENDGRID_API_KEY);
-const msg = {
-  to: 'ayalaarturo925@gmail.com', // Change to your recipient
-  from: 'ayalaarturo925@gmail.com', // Change to your verified sender
-  subject: 'Sending with SendGrid is Fun',
-  text: 'and easy to do anywhere, even with Node.js',
-  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-}
-sgMail
-  .send(msg)
-  .then(() => {
-    console.log('Email sent')
-  })
-  .catch((error) => {
-    console.error(error.response.body.errors)
-  })
+console.log('SENDGRID_API_KEY:', import.meta.env.SENDGRID_API_KEY);
+
+const sendEmail = (msg) => {
+  const apiKey = process.env.SENDGRID_API_KEY;
+  if (!apiKey) {
+    console.error('SendGrid API key is not defined');
+    return;
+  }
+
+  sgMail.setApiKey(apiKey);
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log('Email sent');
+    })
+    .catch((error) => {
+      console.error('Error:', error.response.body.errors);
+    });
+};
+
+  export default sendEmail;
