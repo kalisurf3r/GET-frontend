@@ -3,7 +3,7 @@ import sgMail from '@sendgrid/mail';
 // dotenv.config();
 
 
-console.log('SENDGRID_API_KEY:', import.meta.env.SENDGRID_API_KEY);
+// console.log('SENDGRID_API_KEY:', import.meta.env.SENDGRID_API_KEY);
 
 const sendEmail = (msg) => {
   const apiKey = process.env.SENDGRID_API_KEY;
