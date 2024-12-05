@@ -435,7 +435,7 @@ function PublicPost({
                       className="comment-item border-t border-gray-300 py-1 flex items-center"
                     >
                       <img
-                        src={comment.User.profilePic}
+                        src={imageUrl}
                         alt="Profile"
                         className="profile-pic mr-4 rounded-full"
                         style={commentImgStyle}
