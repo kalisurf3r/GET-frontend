@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {Filter} from "bad-words";
 import DOMPurify from "dompurify";
+import TopicSelector from "../components/TopicSelector";
 
 function Register() {
 
@@ -232,6 +233,9 @@ function Register() {
                 </svg>
               )}
             </div>
+
+            <TopicSelector />
+
             <button className="bg-blue-500 flex text-white text-xl py-2 px-6 rounded-full mt-8 transition-transform duration-300 hover:scale-125">
               Register
               <svg
@@ -246,6 +250,7 @@ function Register() {
                 <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z" />
               </svg>
             </button>
+          
           </form>
         </div>
       </div>
