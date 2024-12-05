@@ -5,9 +5,11 @@ import { set } from "@cloudinary/url-gen/actions/variable";
 import Modal from "../components/Modal";
 import { UserContext } from "../components/UserContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AllMyPosts(user) {
   // const { id } = useParams();
+  const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
 
   const [post, setPost] = useState(null);
@@ -222,8 +224,9 @@ function AllMyPosts(user) {
       localStorage.setItem("user", JSON.stringify(data));
       setOriginalUserData({...originalUserData, ...updatedData});
       // * update user context
-      updateUser(data);
+      // updateUser(data);
       setShowSettings(false);
+      navigate("/");
     } catch (error) {
       console.error("There was an error updating the user:", error);
     }

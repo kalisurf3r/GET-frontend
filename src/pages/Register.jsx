@@ -151,7 +151,7 @@ function Register() {
             <div className="mt-6 flex flex-col items-start">
               <div
                 className={`flex items-center ${
-                  hasMinLength ? "text-green-500" : "text-red-600"
+                  hasMinLength ? "text-green-500" : "text-red-700"
                 }`}
               >
                 <span className="mr-2">
@@ -170,7 +170,7 @@ function Register() {
               </div>
               <div
                 className={`flex items-center ${
-                  hasLetter ? "text-green-500" : "text-red-600"
+                  hasLetter ? "text-green-500" : "text-red-700"
                 }`}
               >
                 <span className="mr-2">
@@ -189,7 +189,7 @@ function Register() {
               </div>
               <div
                 className={`flex items-center ${
-                  hasNumber ? "text-green-500" : "text-red-600"
+                  hasNumber ? "text-green-500" : "text-red-700"
                 }`}
               >
                 <span className="mr-2">

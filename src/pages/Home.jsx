@@ -4,15 +4,14 @@ import { useNavigate } from "react-router-dom";
 import List from "../components/List";
 import Modal from "../components/Modal";
 import { set } from "@cloudinary/url-gen/actions/variable";
-import {Filter} from "bad-words";
+import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
       setIsModalOpen(true);
     }
@@ -21,7 +20,7 @@ function Home() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  
+
   const navigate = useNavigate();
   const handleLogin = () => {
     navigate("/login");
@@ -30,7 +29,6 @@ function Home() {
     navigate("/register");
   };
 
- 
   const [note, setNote] = useState("");
   const [title, setTitle] = useState("");
 
@@ -43,7 +41,7 @@ function Home() {
         console.error("No token found in localStorage");
         return;
       }
-  
+
       console.log("Using token:", token);
 
       // Example: Sending the note to a backend API
@@ -51,7 +49,7 @@ function Home() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-           Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           user_id: user.id,
@@ -61,9 +59,7 @@ function Home() {
           likes: 0, // Default value
           dislikes: 0, // Default value
         }),
-        
       });
-
 
       if (response.ok) {
         const result = await response.json();
@@ -108,7 +104,7 @@ function Home() {
               <h2 className="mt-6">What we learned Today?</h2>
             </div>
 
-            <div  className="flex flex-col sm:flex-col">
+            <div className="flex flex-col sm:flex-col">
               <input
                 type="text"
                 placeholder="Enter Title"
@@ -123,7 +119,7 @@ function Home() {
                 cols="60"
                 value={note}
                 onChange={handleTextareaChange}
-                style={{ resize: 'none' }}
+                style={{ resize: "none" }}
               ></textarea>
             </div>
 
@@ -138,30 +134,37 @@ function Home() {
           </div>
         </div>
 
-        <Modal isOpen={isModalOpen} onClose={closeModal} >
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
           <h2 className="text-2xl mb-4">Welcome Programmer</h2>
           <p>
-            GET is a digital diary or note taker for <em className="font-semibold">Coders</em>. Make notes for
-            yourself and share them with the world. Help each other grow.
+            GET is a digital diary or note taker for{" "}
+            <em className="font-semibold">Coders</em>. Make notes for yourself
+            and share them with the world. Help each other grow.
           </p>
           <br></br>
-          <p>
-            First time?{" "}
+          <p className="flex">
+            First time? &nbsp;
             <a href="">
-              <span className="italic" onClick={handleRegister}>
+              <h3
+                className="italic underline font-medium transition-transform duration-300 hover:scale-110"
+                onClick={handleRegister}
+              >
                 Sign up here
-              </span>
+              </h3>
             </a>
           </p>
 
           <br></br>
 
-          <p>
-            For those coming back,{" "}
+          <p className="flex">
+            For those coming back, &nbsp;
             <a href="">
-              <span className="italic" onClick={handleLogin}>
+              <h3
+                className="italic underline font-medium transition-transform duration-300 hover:scale-110"
+                onClick={handleLogin}
+              >
                 Click here
-              </span>
+              </h3>
             </a>
           </p>
 
