@@ -291,6 +291,22 @@ function ViewProfile() {
         )}
       </div>
 
+      <div >
+        <div>
+          <p>Tags</p>
+          </div>
+
+        <div>
+        <ul>
+        {Array.isArray(userData.topics) && userData.topics.length > 0 ? (
+      userData.topics.map((topic, index) => <li key={index}>{topic}</li>)
+    ) : (
+      <li>No topics available</li>
+    )}
+    </ul>
+      </div>
+      </div>
+
       <div className="flex flex-col items-center">
         <p className="text-2xl mt-6">Posts:</p>
         {posts.map((post) => (

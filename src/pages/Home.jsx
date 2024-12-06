@@ -145,12 +145,12 @@ function Home() {
           <p className="flex">
             First time? &nbsp;
             <a href="">
-              <h3
+              <span
                 className="italic underline font-medium transition-transform duration-300 hover:scale-110"
                 onClick={handleRegister}
               >
                 Sign up here
-              </h3>
+              </span>
             </a>
           </p>
 
@@ -159,12 +159,12 @@ function Home() {
           <p className="flex">
             For those coming back, &nbsp;
             <a href="">
-              <h3
+              <span
                 className="italic underline font-medium transition-transform duration-300 hover:scale-110"
                 onClick={handleLogin}
               >
                 Click here
-              </h3>
+              </span>
             </a>
           </p>
 

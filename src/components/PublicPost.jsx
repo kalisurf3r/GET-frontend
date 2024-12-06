@@ -15,6 +15,7 @@ function PublicPost({
   title,
   content,
   imageUrl,
+  topics,
   likes,
   dislikes,
   createdAt,
@@ -324,7 +325,7 @@ function PublicPost({
 
   const goProfile = () => {
     navigate(`/profile/${userId}`, {
-      state: { id, userId, userName, imageUrl },
+      state: { id, userId, userName, imageUrl, topics},
     });
   };
 

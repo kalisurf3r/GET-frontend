@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const TopicSelector = () => {
+const TopicSelector = ({ setTopics }) => {
   const [selectedTopics, setSelectedTopics] = useState([]);
 
   const topics = [
@@ -13,41 +13,32 @@ const TopicSelector = () => {
     "Data Structures",
   ];
 
-  const handleTopicClick = (topic) => {
-    setSelectedTopics(
-      (prev) =>
-        prev.includes(topic)
-          ? prev.filter((t) => t !== topic) // Remove topic if already selected
-          : [...prev, topic] // Add topic if not selected
-    );
+  const handleTopicChange = (topic) => {
+    let updatedTopics;
+    if (selectedTopics.includes(topic)) {
+      updatedTopics = selectedTopics.filter((t) => t !== topic);
+    } else {
+      updatedTopics = [...selectedTopics, topic];
+    }
+    setSelectedTopics(updatedTopics);
+    setTopics(updatedTopics); // Notify the parent component
   };
 
   return (
-    <div className="mt-8">
-      <h3 className="mb-6 text-center text-2xl">Select Topics Around You</h3>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-        {topics.map((topic) => (
-          <button
-            type="button"
-            key={topic}
-            onClick={() => handleTopicClick(topic)}
-            style={{
-              padding: "10px 15px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              backgroundColor: selectedTopics.includes(topic)
-                ? "#4caf50"
-                : "#f0f0f0",
-              color: selectedTopics.includes(topic) ? "#fff" : "#000",
-              cursor: "pointer",
-            }}
-          >
-            {topic}
-          </button>
-        ))}
-      </div>
+    <div className="flex flex-wrap mt-4">
+      {topics.map((topic) => (
+        <button
+        type="button"
+          key={topic}
+          className={`p-2 m-1 border rounded ${
+            selectedTopics.includes(topic) ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => handleTopicChange(topic)}
+        >
+          {topic}
+        </button>
+      ))}
     </div>
   );
-};
-
+}
 export default TopicSelector;

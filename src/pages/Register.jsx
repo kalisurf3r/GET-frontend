@@ -17,6 +17,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [topics, setTopics] = useState([]);
 
   const navigate = useNavigate();
 
@@ -61,7 +62,7 @@ function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, userName, password, profilePic }),
+        body: JSON.stringify({ email, userName, password, profilePic, topics }),
       });
       const data = await response.json();
       const token = data.token;
@@ -234,7 +235,7 @@ function Register() {
               )}
             </div>
 
-            <TopicSelector />
+            <TopicSelector setTopics={setTopics}/>
 
             <button className="bg-blue-500 flex text-white text-xl py-2 px-6 rounded-full mt-8 transition-transform duration-300 hover:scale-125">
               Register

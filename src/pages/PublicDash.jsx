@@ -109,7 +109,7 @@ function PublicDash() {
             dislikes={post.dislikes}
             createdAt={post.createdAt}
             finalComments={post.Comments.sort((a, b) => b.likes - a.likes)}
-            
+            topics={post.User.topics}
             likeUpdate={handleLikeUpdate}
             dislikeUpdate={handleDislikeUpdate}
             commentUpdate={handleCommentUpdate}
