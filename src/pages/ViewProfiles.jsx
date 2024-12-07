@@ -208,7 +208,7 @@ function ViewProfile() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center ">
       <div className="flex justify-end w-full">
         <button className="mr-20 mt-4" onClick={toggleModal}>
           <svg
@@ -260,10 +260,12 @@ function ViewProfile() {
                 <h1 className="mb-2 text-center">
                   Unsubscribe from email notifications?
                 </h1>
-                <button 
-                onClick={handleUnsubscribe}
-                className="rounded-full px-4 py-2 bg-red-500 text-white flex justify-center mx-auto"
-                >Unsubscribe</button>
+                <button
+                  onClick={handleUnsubscribe}
+                  className="rounded-full px-4 py-2 bg-red-500 text-white flex justify-center mx-auto"
+                >
+                  Unsubscribe
+                </button>
               </div>
             )}
           </div>
@@ -291,27 +293,32 @@ function ViewProfile() {
         )}
       </div>
 
-      <div >
-        <div>
-          <p>Tags</p>
-          </div>
+      <div className=" sm:static sm:w-1/4 sm:left-0 lg:absolute lg:left-20 lg:top-30 lg:h-full ">
+        <div className="flex flex-col p-2">
+          <p className="text-2xl font-medium text-center ">Tags</p>
 
-        <div>
-        <ul>
-        {Array.isArray(userData.topics) && userData.topics.length > 0 ? (
-      userData.topics.map((topic, index) => <li key={index}>{topic}</li>)
-    ) : (
-      <li>No topics available</li>
-    )}
-    </ul>
-      </div>
+          <ul className="space-y-2 mt-4">
+            {Array.isArray(userData.topics) && userData.topics.length > 0 ? (
+              userData.topics.map((topic, index) => (
+                <li
+                  key={index}
+                  className="bg-green-500 text-white text-center px-4 py-2 rounded-md shadow-sm cursor-default"
+                >
+                  {topic}
+                </li>
+              ))
+            ) : (
+              <li className="text-gray-500">No topics available</li>
+            )}
+          </ul>
+        </div>
       </div>
 
       <div className="flex flex-col items-center">
-        <p className="text-2xl mt-6">Posts:</p>
+        <p className="text-2xl font-medium mt-6">Posts:</p>
         {posts.map((post) => (
           <React.Fragment key={post.id}>
-            <div className="w-3/4 border-2 border-black border-dotted p-4 mb-6 mt-10">
+            <div className="w-3/4 lg:w-full border-2 border-black border-dotted p-4 mb-6 mt-10">
               <div className="flex justify-between border-2 border-black p-1">
                 <h1 className="ml-2">{post.title}</h1>
               </div>
