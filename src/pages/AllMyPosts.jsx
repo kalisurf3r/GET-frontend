@@ -376,7 +376,7 @@ function AllMyPosts(user) {
        
         <div
           key={post.id}
-          className="w-full  max-w-4xl lg:w-3/4 xl:w-2/3 mx-auto shadow-lg border-4 border-gray-200 border-dotted border-gray-800 hover:border-green-500 transition-colors duration-300 p-4 mb-6 mt-10 lg:scale-110 lg:p-8"
+          className="w-full  max-w-4xl lg:w-3/4 xl:w-2/3 mx-auto shadow-lg border-4 border-gray-200 border-dotted hover:border-green-500 transition-colors duration-300 p-4 mb-6 mt-10 lg:scale-110 lg:p-8"
         >
             <div className="relative">
          <button onClick={() => handleEditClick(post)} className="absolute top-2 right-1 py-2 px-3 bg-gray-700 rounded-full shadow-md hover:bg-gray-600 hover:shadow-lg transition-transform duration-300 flex justify-center">
@@ -411,10 +411,10 @@ function AllMyPosts(user) {
               name="content"
               value={editedPost.content}
               onChange={handleInputChange}
-              className="w-full py-2 px-4 text-base text-gray-900 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 placeholder-gray-400 resize-none"
+              className="w-full py-2 px-4 text-base text-gray-900 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 placeholder-gray-400 resize-none "
             />
           ) : (
-            <p className="text-center text-lg md:text-xl lg:text-2xl text-gray-300 mt-4 leading-relaxed">{post.content}</p>
+            <p className="text-center text-lg md:text-xl lg:text-2xl text-gray-300 mt-4 leading-relaxed transition-transform duration-300 hover:scale-105">{post.content}</p>
           )}
           {editingPostId === post.id && (
             <button

@@ -12,16 +12,30 @@ function List() {
     const fetchUserData = async () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
+        console.log("User object from localStorage:", user);
+
+        if (!user || !user.user || !user.user.id) {
+          console.error("Invalid user object or userId missing:", user);
+          return;
+        }
+
         const userId = user.user.id;
+        console.log("Extracted userId:", userId);
 
         const response = await fetch(`http://localhost:3004/users/${userId}`);
+
+        if (!response.ok) {
+          console.error("Failed to fetch user data:", response.statusText);
+          return;
+        }
 
         if (response.ok) {
           const userData = await response.json();
           console.log("Fetched user data from API:", userData);
+          // const userIdFromPosts = userData.Posts.user_id;
           setUserId(userData.id);
+          console.log("Updated userId state to:", setUserId);
           setLoggedIn(true);
-          // fetchPosts(userData.id);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -32,28 +46,44 @@ function List() {
   }, []);
 
   useEffect(() => {
-    if (userId) {
-      const fetchPosts = async () => {
-        try {
-          const response = await fetch(
-            `http://localhost:3004/posts/user/${userId}`
-          );
-          const data = await response.json();
-          console.log("Fetched posts data:", data);
-          if (Array.isArray(data)) {
-            setPosts(data);
-          } else {
-            console.log(
-              "Unexpected data format, setting posts to an empty array"
-            );
-            setPosts([]); // Ensure posts is always an array
-          }
-          setDisplayPosts(true);
-        } catch (error) {
-          console.error("Error fetching posts:", error);
-          setPosts([]); // Ensure posts is always an array
+    const fetchPosts = async () => {
+      try {
+        console.log("userId in useEffect:", userId);
+        const response = await fetch(
+          `http://localhost:3004/posts/user/${userId}`
+        );
+
+        if (!response.ok) {
+          console.error("Error fetching posts:", response.statusText);
+          return;
         }
-      };
+
+        const data = await response.json();
+        console.log("Fetched posts data:", data);
+
+        if (Array.isArray(data)) {
+          setPosts(data);
+          setDisplayPosts(true);
+        } else if (data.Posts && Array.isArray(data.Posts)) {
+          setPosts(data.Posts);
+          setDisplayPosts(true);
+        } else {
+          console.warn(
+            "Unexpected data format, setting posts to an empty array."
+          );
+          setPosts([]);
+          setDisplayPosts(false);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setPosts([]);
+        setDisplayPosts(false);
+      }
+    };
+
+    if (userId) {
+      console.log("Fetching posts for user ID:", userId);
+      setDisplayPosts(true);
       fetchPosts();
     }
   }, [userId]);
@@ -64,12 +94,12 @@ function List() {
         Most Recent:
       </h3>
 
-      {loggedIn && displayPosts && (
-        <ul className="list-disc ml-6 mt-6 text-xl space-y-4 sm:mt-2 sm:text-lg sm:space-y-2 md:mt-4 md:text-xl md:space-y-4">
+      {loggedIn && displayPosts && posts.length > 0 && (
+        <ul className=" mt-6  text-2xl space-y-4 sm:mt-2 sm:text-xl sm:space-y-2 md:mt-4 md:text-2xl md:space-y-4">
           {posts.slice(0, 5).map((post) => (
             <li
               key={post.id}
-              className="text-gray-100 font-medium hover:text-green-500 transition-colors duration-300"
+              className="text-gray-100 text-center font-medium hover:text-green-500 transition-colors duration-300"
             >
               <Link to={`/post/${post.id}`}>{post.title}</Link>
             </li>
