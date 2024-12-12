@@ -5,12 +5,19 @@ function Footer() {
   };
   
     return (
-    <footer className="w-full py-5 bg-zinc-300 font-medium " style={styles}>
-      <p className="ml-6">Coders Journey 2024. All Rights Reserved.&nbsp;  
-        <span className="italic cursor-pointer">
-         For More.
+      <footer
+      className="w-full py-6 bg-gradient-to-r from-slate-600 to-slate-800 text-white font-medium shadow-lg"
+      style={styles}
+    >
+      <p className="ml-6 text-base md:text-lg">
+        © GET. All Rights Reserved. &nbsp;
+        <span
+          className="italic underline cursor-pointer hover:text-blue-400 transition-colors duration-300"
+          onClick={() => window.open("https://codersjourney.com", "_blank")}
+        >
+          For More
         </span>
-        </p>
+      </p>
     </footer>
   );
 }

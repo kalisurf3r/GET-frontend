@@ -15,7 +15,7 @@ function App() {
     <>
   <UserProvider>
       <Navbar />
-      <main className="bg-zinc-500">
+      <main className="bg-gray-900">
       <Outlet />
       </main>
       <Footer />

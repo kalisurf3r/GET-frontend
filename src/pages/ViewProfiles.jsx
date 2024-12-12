@@ -5,6 +5,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "../components/animation.css";
 import sendEmail from "../components/Sendgrid";
 import Modal from "../components/Modal";
+import "../components/modal.css";
 
 function ViewProfile() {
   const location = useLocation();
@@ -15,8 +16,8 @@ function ViewProfile() {
   const [modalVisible, setModalVisible] = useState(false);
 
   const commentImgStyle = {
-    width: "60px",
-    height: "60px",
+    width: "70px",
+    height: "70px",
     objectFit: "cover",
     borderRadius: "50%",
     border: "2px solid #f1f1f1",
@@ -207,30 +208,49 @@ function ViewProfile() {
     return <p>Loading...</p>;
   }
 
+  useEffect(() => {
+    if (modalVisible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [modalVisible]);
+
   return (
-    <div className="min-h-screen flex flex-col items-center ">
+    <div className="min-h-screen flex flex-col items-center relative z-[1]">
       <div className="flex justify-end w-full">
         <button className="mr-20 mt-4" onClick={toggleModal}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
             fill="currentColor"
-            className="bi bi-envelope-plus"
+            className="bi bi-envelope-plus w-[10vw] max-w-[80px] h-[10vw] max-h-[80px] text-blue-500  hover:animate-bounce transition-transform duration-300"
             viewBox="0 0 16 16"
+            preserveAspectRatio="xMidYMid meet"
           >
             <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z" />
             <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5" />
           </svg>
         </button>
 
-        <Modal isOpen={modalVisible} onClose={toggleModal}>
-          <div style={{ zIndex: 1000 }}>
-            <div className="mb-4" onClick={toggleModal}>
+        {/* // * all modal styling is now in the modal.css file */}
+        <Modal
+          isOpen={modalVisible}
+          onClose={toggleModal}
+          className="fixed inset-0 z-[9999] flex items-center justify-center"
+        >
+          {/* Backdrop */}
+          <div className="fixed inset-0 bg-black bg-opacity-75 z-[9998]"></div>
+
+          {/* Modal */}
+          <div className="relative flex flex-col justify-center items-center text-center bg-gray-900 p-8 rounded-lg shadow-xl w-full sm:w-10/12 md:w-4/5 lg:w-3/4 xl:w-3/5 2xl:w-1/2 mx-auto text-gray-100 transform scale-95 transition-transform duration-300 ease-in-out min-w-[35vh] max-w-[70vh] min-h-[40vh] max-h-[90vh] overflow-y-auto z-[9999]">
+            <div
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-100 cursor-pointer"
+              onClick={toggleModal}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="24"
+                height="24"
                 fill="currentColor"
                 className="bi bi-x-lg"
                 viewBox="0 0 16 16"
@@ -241,28 +261,32 @@ function ViewProfile() {
 
             {isSubscribed === false ? (
               <div>
-                <h1 className="mb-2 text-center">
+                <h1 className="text-3xl font-bold mb-6 text-center">
                   Receive email notifications?
                 </h1>
-                <h1 className="mb-2 text-center">
+                <h1 className="text-lg mb-6 text-center leading-relaxed">
                   Stay up to date with new posts from{" "}
-                  <strong>{userData.userName}</strong>
+                  <strong className="text-blue-300">{userData.userName}</strong>
                 </h1>
                 <button
                   onClick={handleSubscribe}
-                  className="rounded-full px-4 py-2 bg-blue-500 text-white flex justify-center mx-auto"
+                  className="rounded-full px-6 py-3 bg-blue-500 text-white font-bold text-lg shadow-md hover:scale-125 hover:bg-blue-600 transition-transform duration-300 flex justify-center mx-auto"
                 >
                   Enroll
                 </button>
               </div>
             ) : (
               <div>
-                <h1 className="mb-2 text-center">
+                <h1 className="text-3xl font-bold mb-6 text-center">
                   Unsubscribe from email notifications?
                 </h1>
+                <p className="text-lg mb-6 text-center leading-relaxed">
+                  You will no longer receive updates from{" "}
+                  <strong className="text-red-300">{userData.userName}</strong>.
+                </p>
                 <button
                   onClick={handleUnsubscribe}
-                  className="rounded-full px-4 py-2 bg-red-500 text-white flex justify-center mx-auto"
+                  className="rounded-full px-6 py-3 bg-red-500 text-white font-bold text-lg shadow-md hover:scale-125 hover:bg-red-600 transition-transform duration-300 flex justify-center mx-auto"
                 >
                   Unsubscribe
                 </button>
@@ -272,7 +296,9 @@ function ViewProfile() {
         </Modal>
       </div>
       <div className="flex">
-        <h1 className="text-3xl text-white mt-4">{userData.userName}</h1>
+        <h1 className="text-4xl lg:text-5xl font-semibold text-white mt-4">
+          {userData.userName}
+        </h1>
 
         {userData ? (
           <img
@@ -282,58 +308,65 @@ function ViewProfile() {
                 : userData.imageUrl
             }
             alt="profile"
-            className="w-20 h-20 rounded-full ml-4"
+            className="w-32 h-32 lg:w-40 lg:h-40 rounded-full ml-6 border-4 border-white shadow-lg"
           />
         ) : (
           <img
             src="/avatar.png"
             alt="profile"
-            className="w-20 h-20 rounded-full ml-4 mt-1"
+            className="w-32 h-32 lg:w-40 lg:h-40 rounded-full ml-6 border-4 border-white shadow-lg"
           />
         )}
       </div>
 
-      <div className=" sm:static sm:w-1/4 sm:left-0 lg:absolute lg:left-20 lg:top-30 lg:h-full ">
+      <div className="z-[2] relative sm:static sm:w-1/4 sm:left-0 lg:absolute lg:left-20 lg:top-30 lg:h-full ">
         <div className="flex flex-col p-2">
-          <p className="text-2xl font-medium text-center ">Tags</p>
+          <p className="underline text-2xl md:text-3xl lg:text-4xl font-medium text-center text-gray-200 my-4">
+            Tags :
+          </p>
 
-          <ul className="space-y-2 mt-4">
+          <ul className=" space-y-2 mt-4 list-disc list-inside text-lg md:text-xl lg:text-2xl text-gray-800">
             {Array.isArray(userData.topics) && userData.topics.length > 0 ? (
               userData.topics.map((topic, index) => (
                 <li
                   key={index}
-                  className="bg-green-500 text-white text-center px-4 py-2 rounded-md shadow-sm cursor-default"
+                  className="bg-green-600 text-white text-center px-2 py-2 rounded-lg shadow-md hover:bg-green-500 hover:scale-105 transition-transform duration-200 cursor-pointer"
                 >
                   {topic}
                 </li>
               ))
             ) : (
-              <li className="text-gray-500">No topics available</li>
+              <li className="text-gray-200">No topics available</li>
             )}
           </ul>
         </div>
       </div>
 
-      <div className="flex flex-col items-center">
-        <p className="text-2xl font-medium mt-6">Posts:</p>
+      <div className="flex flex-col items-center z-[0] relative">
+        <p className="text-4xl lg:text-5xl font-bold text-gray-200 mt-8 mb-4 text-center lg:text-left">
+          Posts :
+        </p>
         {posts.map((post) => (
           <React.Fragment key={post.id}>
-            <div className="w-3/4 lg:w-full border-2 border-black border-dotted p-4 mb-6 mt-10">
-              <div className="flex justify-between border-2 border-black p-1">
-                <h1 className="ml-2">{post.title}</h1>
+            <div className="w-full  lg:w-3/4 xl:w-2/3 shadow-lg border-4 border-gray-200 border-dotted border-gray-800 hover:border-green-500 transition-colors duration-300 p-4 mb-6 mt-10 lg:scale-110 lg:p-8">
+              <div className="flex justify-between border-2 border-gray-300 p-2 lg:p-4">
+                <h1 className="ml-2 text-gray-200 text-2xl md:text-3xl lg:text-4xl font-bold">
+                  {post.title}
+                </h1>
               </div>
-              <p className="text-center mt-2">{post.content}</p>
+              <p className="text-center mt-4 px-4 mt-2 text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed ">
+                {post.content}
+              </p>
               <button
-                className="flex justify-content mx-auto"
+                className="flex justify-content mx-auto mt-4 transition-transform duration-300 hover:scale-125"
                 onClick={() => toggleComments(post.id)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="28"
-                  height="28"
                   fill="currentColor"
-                  className="bi bi-body-text mt-2 mr-4 transition-transform duration-300 hover:scale-150"
+                  className="bi bi-body-text mt-2 w-[8vw] max-w-[48px] h-[8vw] max-h-[48px] text-gray-300 hover:text-green-500"
                   viewBox="0 0 16 16"
+                  preserveAspectRatio="xMidYMid meet"
                 >
                   <path
                     fillRule="evenodd"
@@ -344,7 +377,7 @@ function ViewProfile() {
             </div>
 
             <div
-              className="commentcontainer w-full flex justify-center items-center"
+              className="commentcontainer w-full flex justify-center items-center z-[2] relative"
               style={{ maxHeight: "400px", overflowY: "auto" }}
             >
               {commentsVisible[post.id] && (
@@ -359,7 +392,7 @@ function ViewProfile() {
                         >
                           <li
                             key={comment.id}
-                            className="comment-item border-t border-gray-300 py-1 flex items-center"
+                            className="comment-item border-t border-gray-300 py-3 px-4 flex items-center space-x-4"
                           >
                             <img
                               src={
@@ -372,22 +405,26 @@ function ViewProfile() {
                               style={commentImgStyle}
                             />
 
-                            <div>
-                              <h4 className="font-semibold">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-gray-200 text-lg md:text-xl lg:text-2xl">
                                 {comment.User.userName}
                               </h4>
-                              <p>{comment.content}</p>
+                              <p className="text-base text-gray-200 md:text-lg lg:text-xl">
+                                {comment.content}
+                              </p>
                             </div>
 
-                            <div className="votes ml-8 flex items-center">
-                              <span className="mr-1">{comment.likes}</span>
+                            <div className="votes flex items-center">
+                              <span className="text-lg text-gray-200 md:text-xl lg:text-2xl mr-2">
+                                {comment.likes}
+                              </span>
 
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
+                                width="24"
+                                height="24"
                                 fill="currentColor"
-                                className="bi bi-heart-fill"
+                                className="bi bi-heart-fill text-red-600"
                                 viewBox="0 0 16 16"
                               >
                                 <path

@@ -103,7 +103,15 @@ function AllMyPosts(user) {
 
   // * open modal to view profile settings
   const [showSettings, setShowSettings] = useState(false);
-  
+
+  useEffect(() => {
+    if (setShowSettings) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [setShowSettings]);
+
   const [userData, setUserData] = useState({
     email: "",
     userName: "",
@@ -116,7 +124,7 @@ function AllMyPosts(user) {
     password: "",
     profilePic: "",
   });
-  
+
   const [profilePic, setProfilePic] = useState("");
   const handleImageUpload = (url) => {
     setProfilePic(url);
@@ -155,7 +163,7 @@ function AllMyPosts(user) {
 
     if (!userData || !originalUserData) {
       console.error("userData or originalUserData is undefined");
-      setError('User data is not available');
+      setError("User data is not available");
       return;
     }
 
@@ -176,10 +184,9 @@ function AllMyPosts(user) {
     }
 
     if (Object.keys(updatedData).length === 0) {
-      setError('No changes to save');
+      setError("No changes to save");
       window.location.reload();
       return;
-      
     }
 
     console.log("Updated data:", updatedData);
@@ -192,7 +199,6 @@ function AllMyPosts(user) {
       if (!token) {
         throw new Error("No token found in localStorage");
       }
-    
 
       console.log("Sending request to update user:", {
         id,
@@ -222,7 +228,7 @@ function AllMyPosts(user) {
       const data = await response.json();
       console.log("Updated user data:", data);
       localStorage.setItem("user", JSON.stringify(data));
-      setOriginalUserData({...originalUserData, ...updatedData});
+      setOriginalUserData({ ...originalUserData, ...updatedData });
       // * update user context
       // updateUser(data);
       setShowSettings(false);
@@ -249,10 +255,10 @@ function AllMyPosts(user) {
       <div className="settings mt-2 pl-8 w-full flex justify-start">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="35"
-          height="35"
+          width="50"
+          height="50"
           fill="currentColor"
-          className="bi bi-gear"
+          className="bi bi-gear text-gray-200 hover:text-blue-500 transition-transform duration-300 hover:scale-125"
           viewBox="0 0 16 16"
           onClick={handleSettingsOpenClick}
         >
@@ -261,47 +267,73 @@ function AllMyPosts(user) {
         </svg>
         {showSettings && (
           <Modal
-            className="modal z-50"
+            className="modal z-50 "
             isOpen={showSettings}
             onRequestClose={() => setShowSettings(false)}
           >
             <div className="modal-content">
               <span className="close" onClick={() => setShowSettings(false)}>
-                &times;
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  className="bi bi-x-lg hover:fill-red-500"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                </svg>
               </span>
               <form
                 onSubmit={handleSettingsSaveClick}
-                className="flex flex-col my-4"
+                className="flex flex-col space-y-6 my-4"
               >
-                <label className="mb-2">
-                  Email: &nbsp;
+                <label className="flex flex-col">
+                  <span className="text-lg md:text-xl font-medium text-gray-700 mb-2">
+                    Email
+                  </span>
                   <input
-                    type="text"
-                    name="username"
+                    type="email"
+                    name="email"
                     value={userData.email}
-                    onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                    onChange={(e) =>
+                      setUserData({ ...userData, email: e.target.value })
+                    }
+                    className="py-3 px-4 w-full border border-gray-300 rounded-lg text-base md:text-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Your email"
                   />
                 </label>
-                <label className="mb-2">
-                  Username: &nbsp;
+                <label className="flex flex-col">
+                  <span className="text-lg md:text-xl font-medium text-gray-700 mb-2">
+                    Username
+                  </span>
                   <input
                     type="text"
                     name="username"
                     value={userData.userName}
-                    onChange={(e) => setUserData({ ...userData, userName: e.target.value })}
+                    onChange={(e) =>
+                      setUserData({ ...userData, userName: e.target.value })
+                    }
+                    className="py-3 px-4 w-full border border-gray-300 rounded-lg text-base md:text-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Your username"
                   />
                 </label>
-                <label className="mb-2">
-                  Password: &nbsp;
+                <label className="flex flex-col">
+                  <span className="text-lg md:text-xl font-medium text-gray-700 mb-2">
+                    Password
+                  </span>
                   <input
                     type="password"
                     name="password"
                     value={userData.password}
-                  
-                    onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+                    onChange={(e) =>
+                      setUserData({ ...userData, password: e.target.value })
+                    }
+                    className="py-3 px-4 w-full border border-gray-300 rounded-lg text-base md:text-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Your password"
                   />
                 </label>
-                <label className="mb-2">
+                <label className="mb-2 text-lg md:text-xl font-medium text-gray-700">
                   Profile Picture: &nbsp;
                   <UploadWidget onUpload={handleImageUpload} />
                   <div className="flex justify-center">
@@ -330,7 +362,7 @@ function AllMyPosts(user) {
                 </label>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white text-center text-xl py-2 px-2 rounded-full mt-8 transition-transform duration-300 hover:scale-110"
+                  className="bg-blue-500 text-white text-center text-xl py-2 px-2 rounded-full mt-8 transition-transform duration-300 shadow-lg hover:bg-blue-600  hover:scale-105"
                 >
                   Save
                 </button>
@@ -340,49 +372,54 @@ function AllMyPosts(user) {
         )}
       </div>
       {post.map((post) => (
+      
+       
         <div
           key={post.id}
-          className="w-1/2 border-2 border-black border-dotted p-2 mb-6 mt-10"
+          className="w-full  max-w-4xl lg:w-3/4 xl:w-2/3 mx-auto shadow-lg border-4 border-gray-200 border-dotted border-gray-800 hover:border-green-500 transition-colors duration-300 p-4 mb-6 mt-10 lg:scale-110 lg:p-8"
         >
-          <div className="flex justify-between border-2 border-black p-1">
+            <div className="relative">
+         <button onClick={() => handleEditClick(post)} className="absolute top-2 right-1 py-2 px-3 bg-gray-700 rounded-full shadow-md hover:bg-gray-600 hover:shadow-lg transition-transform duration-300 flex justify-center">
+           <svg
+             xmlns="http://www.w3.org/2000/svg"
+             width="25"
+             height="25"
+             fill="currentColor"
+             className="bi bi-pencil mr-2 text-gray-200 transition-transform duration-300 hover:scale-125"
+             viewBox="0 0 16 16"
+           >
+             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+           </svg>
+         </button>
+         </div>
+          <div className="flex flex-col w-full space-y-4 p-4  border-2 border-gray-300 shadow-lg">
             {editingPostId === post.id ? (
               <input
                 type="text"
                 name="title"
                 value={editedPost.title}
                 onChange={handleInputChange}
-                className="ml-2 border-1 bg-gray-200 cursor-text"
+                className="w-full py-2 px-4 text-lg font-semibold text-gray-900 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 placeholder-gray-400"
               />
             ) : (
-              <h1 className="ml-2">{post.title}</h1>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-200 mt-2 ml-2 tracking-wide ">{post.title}</h1>
             )}
-            <button onClick={() => handleEditClick(post)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="25"
-                height="25"
-                fill="currentColor"
-                className="bi bi-pencil mr-2 transition-transform duration-300 hover:scale-125"
-                viewBox="0 0 16 16"
-              >
-                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-              </svg>
-            </button>
+           
           </div>
           {editingPostId === post.id ? (
             <textarea
               name="content"
               value={editedPost.content}
               onChange={handleInputChange}
-              className="text-center mt-2 w-full border-1 bg-gray-200 cursor-text"
+              className="w-full py-2 px-4 text-base text-gray-900 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 placeholder-gray-400 resize-none"
             />
           ) : (
-            <p className="text-center mt-2">{post.content}</p>
+            <p className="text-center text-lg md:text-xl lg:text-2xl text-gray-300 mt-4 leading-relaxed">{post.content}</p>
           )}
           {editingPostId === post.id && (
             <button
               onClick={() => handleSaveClick(post.id)}
-              className="mt-2 px-3 py-2 text-black bg-blue-500 rounded-full hover:text-green-500  transition-transform duration-300 hover:scale-110"
+              className="mt-2 px-6 py-3 text-lg font-semibold  text-gray-100 bg-blue-500 rounded-full hover:bg-blue-600 shadow-lg  transition-transform duration-300 hover:scale-110"
             >
               Save
             </button>

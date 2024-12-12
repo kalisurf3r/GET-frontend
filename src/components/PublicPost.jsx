@@ -49,6 +49,8 @@ function PublicPost({
   const [isDisliked, setIsDisliked] = useState(false);
   const [dislikedPosts, setDislikedPosts] = useState([]);
 
+  
+
   // * check if post is liked
   useEffect(() => {
     // Retrieve liked posts from local storage
@@ -144,10 +146,18 @@ function PublicPost({
   const [comments, setComments] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [comTitle, setComTitle] = useState("");
-  const [comContent, setComContent] = useState("");
-  const [comDate, setComDate] = useState("");
-  const [comPostId, setComPostId] = useState("");
+const [comTitle, setComTitle] = useState("");
+const [comContent, setComContent] = useState("");
+const [comDate, setComDate] = useState("");
+const [comPostId, setComPostId] = useState("");
+
+useEffect(() => {
+  if (isModalOpen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+}, [isModalOpen]);
 
   // * filter for profanity
   const filter = new Filter();
@@ -325,79 +335,95 @@ function PublicPost({
 
   const goProfile = () => {
     navigate(`/profile/${userId}`, {
-      state: { id, userId, userName, imageUrl, topics},
+      state: { id, userId, userName, imageUrl, topics },
     });
   };
 
   return (
     <div
-      className={` flex flex-col justify-center items-center mt-4 ml-6 w-80 h-100 overflow-hidden`}
+      className={` flex flex-col lg:w-3/4 xl:w-2/3 shadow-lg border-4 border-gray-200 border-dotted border-gray-800 justify-center items-center mt-6 mx-auto w-full h-full overflow-hidden max-w-full  p-6`}
     >
-      <div className="border-2 border-black flex items-center px-2 py-4">
-        <div className="ppic mr-2 border-r-2 border-black">
-          <img src={imageUrl} alt="profile" style={imgStyle} className="mr-1 cursor-pointer" onClick={goProfile}/>
-          <h3 className="text-center mt-4">{userName}</h3>
+      <div className="border-2 border-gray-200 flex items-center px-4 py-6 w-full">
+        <div className="ppic mr-2 flex flex-col items-center sm:flex-row sm:items-center border-r-2 border-gray-200">
+          <img
+            src={imageUrl}
+            alt="profile"
+            className="mr-1 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full cursor-pointer"
+            onClick={goProfile}
+          />
+          <h3 className="text-center mr-2 mt-4 text-lg md:text-xl lg:text-2xl font-semibold text-gray-200">
+            {userName}
+          </h3>
         </div>
 
-        <div className="flex flex-col">
-          <div className="title border-b-2 border-black">
-            <h1 className="text-ellipsis overflow-hidden whitespace-nowrap">
+        <div className="flex flex-col flex-grow pl-4">
+          <div className="title border-b-2 border-gray-200  pb-2">
+            <h1 className="text-lg text-gray-200 md:text-xl lg:text-2xl font-bold">
               {title}
             </h1>
           </div>
 
-          <div className="content">
-            <p className="text-ellipsis overflow-hidden whitespace-nowrap">
+          <div className="content  mt-4">
+            <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed">
               {content}
             </p>
           </div>
 
-          <div className="votes relative mt-10 ml-6">
-            <span className="like mr-1 text-lg">{likes}</span>
-            <button
-              className={`like-button ${isLiked ? "disabled" : ""}`}
-              disabled={isLiked}
-              onClick={handleLike}
-              title="Like"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="23"
-                height="23"
-                fill={isLiked ? "blue" : "currentColor"}
-                className="bi bi-hand-thumbs-up-fill transition-transform duration-300 hover:scale-150"
-                viewBox="0 0 16 16"
+          <div className="votes relative mt-10 w-full flex items-center justify-between px-6">
+            <div className="flex items-center">
+              <span className="like  mr-2 text-gray-200 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+                {likes}
+              </span>
+              <button
+                className={`like-button ${isLiked ? "disabled" : ""}`}
+                disabled={isLiked}
+                onClick={handleLike}
+                title="Like"
               >
-                <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z" />
-              </svg>
-            </button>
-            <span className="dislike ml-2 mr-1 text-lg">{dislikes}</span>
-            <button
-              className=" dislike-button ${isDisliked ? 'disabled' : ''}"
-              disabled={isDisliked}
-              onClick={handleDislike}
-              title="Dislike"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="23"
-                height="23"
-                fill={isDisliked ? "red" : "currentColor"}
-                className="bi bi-hand-thumbs-down-fill transition-transform duration-300 hover:scale-150"
-                viewBox="0 0 16 16"
-              >
-                <path d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.38 1.38 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51q.205.03.443.051c.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.9 1.9 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2 2 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.2 3.2 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.8 4.8 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591" />
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill={isLiked ? "blue" : "currentColor"}
+                  className="bi bi-hand-thumbs-up-fill text-gray-300 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 transition-transform duration-300 hover:scale-150"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z" />
+                </svg>
+              </button>
+            </div>
 
-            <div className="flex items-center space-x-2">
-              <button onClick={toggleComments}>
+            <div className="flex items-center">
+              <span className="dislike ml-2 mr-2 text-gray-200 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+                {dislikes}
+              </span>
+              <button
+                className=" dislike-button ${isDisliked ? 'disabled' : ''}"
+                disabled={isDisliked}
+                onClick={handleDislike}
+                title="Dislike"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill={isDisliked ? "red" : "currentColor"}
+                  className="bi bi-hand-thumbs-down-fill text-gray-300 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 transition-transform duration-300 hover:scale-150"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.38 1.38 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51q.205.03.443.051c.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.9 1.9 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2 2 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.2 3.2 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.8 4.8 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="flex flex-col items-center sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-4">
+              <button
+                onClick={toggleComments}
+                className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 p-3 bg-gray-200 rounded-full shadow-lg hover:bg-gray-300 transition-transform duration-300 hover:scale-125"
+                title="Show Comments"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="28"
                   height="28"
                   fill="currentColor"
-                  className="bi bi-body-text mt-2 mr-4 transition-transform duration-300 hover:scale-150"
+                  className="bi bi-body-text w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
                   viewBox="0 0 16 16"
                 >
                   <path
@@ -407,7 +433,7 @@ function PublicPost({
                 </svg>
               </button>
               <button
-                className="bg-blue-500 text-white py-1 px-2 rounded-full mt-4 mx-auto block transition-transform duration-300 hover:scale-110"
+                className="bg-blue-500 text-white py-2 px-4 sm:py-3 sm:px-6 lg:py-4 lg:px-8 rounded-lg shadow-lg font-semibold hover:bg-blue-600 hover:scale-110 transition-transform duration-300 text-sm sm:text-base lg:text-lg"
                 onClick={handleModalOpen}
               >
                 Leave a comment
@@ -419,11 +445,11 @@ function PublicPost({
 
       <div
         className="commentcontainer w-full flex justify-center items-center"
-        style={{ maxHeight: "400px", overflowY: "auto" }}
+        style={{ maxHeight: "600px", overflowY: "auto" }}
       >
         {commentsVisible && (
-          <div className="newcomments mt-2 px-4 flex flex-col justify-center">
-            <ul className="max-w-xs w-full">
+          <div className="mt-2 w-full sm:w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 2xl:w-7/12 p-6 rounded-lg shadow-lg">
+            <ul className="space-y-4">
               <TransitionGroup>
                 {finalComments.slice(-5).map((comment, index) => (
                   <CSSTransition
@@ -433,24 +459,27 @@ function PublicPost({
                   >
                     <li
                       key={comment.id}
-                      className="comment-item border-t border-gray-300 py-1 flex items-center"
+                      className="comment-item flex items-start my-2 space-x-4 p-4 rounded-lg shadow-md border border-gray-200"
                     >
                       <img
                         src={imageUrl}
                         alt="Profile"
-                        className="profile-pic mr-4 rounded-full"
-                        style={commentImgStyle}
+                        className="profile-pic rounded-full w-12 h-12 sm:w-16 sm:h-16"
                       />
 
-                      <div>
-                        <h4 className="font-semibold">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-200 text-lg md:text-xl lg:text-2xl">
                           {comment.User.userName}
                         </h4>
-                        <p>{comment.content}</p>
+                        <p className="text-base text-gray-200 md:text-lg lg:text-xl text-gray-900 leading-relaxed">
+                          {comment.content}
+                        </p>
                       </div>
 
-                      <div className="votes ml-8 flex items-center">
-                        <span className="mr-1">{comLikes[index]}</span>
+                      <div className="votes flex items-center space-x-2">
+                        <span className="text-lg text-gray-200 md:text-xl lg:text-2xl text-gray-900">
+                          {comLikes[index]}
+                        </span>
                         <button
                           className={`like-button ${
                             likedComments[comment.id] ? "liked" : ""
@@ -460,12 +489,10 @@ function PublicPost({
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
                             fill={
                               likedComments[comment.id] ? "red" : "currentColor"
                             }
-                            className="bi bi-heart-fill"
+                            className="bi bi-heart-fill text-gray-200 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 transition-transform duration-300 hover:scale-125"
                             viewBox="0 0 16 16"
                           >
                             <path
@@ -486,7 +513,7 @@ function PublicPost({
 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full relative">
+          <div className="bg-gray-900 p-6 rounded-lg shadow-lg max-w-lg w-full relative">
             <button
               onClick={handleModalClose}
               className="absolute top-2 left-2"
@@ -496,7 +523,7 @@ function PublicPost({
                 width="20"
                 height="20"
                 fill="currentColor"
-                className="bi bi-x-lg hover:fill-red-500"
+                className="bi bi-x-lg text-gray-200 hover:fill-red-500"
                 viewBox="0 0 16 16"
               >
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
@@ -504,14 +531,14 @@ function PublicPost({
             </button>
 
             <textarea
-              placeholder="..."
-              className="w-full mt-4 p-2 border rounded content"
+              placeholder="Write your comment here..."
+              className="w-full h-32 mt-4 p-4 text-lg text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 resize-none"
               value={comContent}
               onChange={(e) => setComContent(e.target.value)}
             ></textarea>
 
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded-full mt-4 mx-auto block"
+              className="bg-blue-500 text-gray-200 py-3 px-6 rounded-full mt-4 mx-auto block text-lg font-semibold shadow-md hover:bg-blue-600 hover:scale-110 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
               onClick={handleComment}
             >
               Comment

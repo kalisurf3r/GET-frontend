@@ -25,14 +25,16 @@ const TopicSelector = ({ setTopics }) => {
   };
 
   return (
-    <div className="flex flex-wrap mt-4">
+    <div className="flex flex-wrap gap-4 mt-6 justify-center">
       {topics.map((topic) => (
         <button
         type="button"
           key={topic}
-          className={`p-2 m-1 border rounded ${
-            selectedTopics.includes(topic) ? "bg-blue-500 text-white" : "bg-gray-200"
-          }`}
+          className={`px-6 py-3 font-semibold text-lg sm:text-xl md:text-2xl rounded-full shadow-lg transition-transform duration-300 ${
+        selectedTopics.includes(topic)
+          ? "bg-green-600 text-white hover:bg-green-500 hover:scale-110"
+          : "bg-gray-300 text-gray-800 hover:bg-green-600 hover:scale-105"
+      }`}
           onClick={() => handleTopicChange(topic)}
         >
           {topic}

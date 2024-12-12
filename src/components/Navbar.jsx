@@ -9,7 +9,7 @@ function Navbar() {
   const [userId, setUserId] = useState(null);
   const [isHandlingProfile, setIsHandlingProfile] = useState(false);
 
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
   const handleLogin = () => {
@@ -21,7 +21,7 @@ function Navbar() {
   const handleProfile = () => {
     if (!isHandlingProfile) {
       setIsHandlingProfile(true);
-    navigate("/posts/user/" + userId);
+      navigate("/posts/user/" + userId);
     }
     setIsHandlingProfile(false);
   };
@@ -29,10 +29,10 @@ function Navbar() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.user) {
-        setProfilePic(user.user.profilePic);
-        console.log(user.profilePic);
-        setUserId(user.id);
-        setLoggedIn(true);
+      setProfilePic(user.user.profilePic);
+      console.log(user.profilePic);
+      setUserId(user.id);
+      setLoggedIn(true);
     }
   }, [user]);
   const handleLogout = () => {
@@ -47,19 +47,16 @@ function Navbar() {
   };
 
   return (
-    <nav className="flex justify-between items-center px-4 sm:px-2 bg-zinc-300 ">
+    <nav className="flex justify-between items-center px-4 sm:px-2 bg-slate-500 ">
       {/* Left side (Home icon and Profile) */}
-      <ul className="flex space-x-4 my-5 sm:space-x-2">
-        <li  title="Home">
+      <ul className="flex space-x-6 sm:space-x-4 my-5">
+        <li title="Home">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="50"
-            height="50"
             fill="currentColor"
-            className="bi bi-houses-fill cursor-pointer transition-transform duration-300 hover:scale-125 w-12 h-12 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+            className="bi bi-houses-fill cursor-pointer transition-transform duration-0 hover:scale-125 w-14 h-14 sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-10 lg:h-10"
             viewBox="0 0 16 16"
             onClick={handleHome}
-           
           >
             <path d="M7.207 1a1 1 0 0 0-1.414 0L.146 6.646a.5.5 0 0 0 .708.708L1 7.207V12.5A1.5 1.5 0 0 0 2.5 14h.55a2.5 2.5 0 0 1-.05-.5V9.415a1.5 1.5 0 0 1-.56-2.475l5.353-5.354z" />
             <path d="M8.793 2a1 1 0 0 1 1.414 0L12 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l1.854 1.853a.5.5 0 0 1-.708.708L15 8.207V13.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 13.5V8.207l-.146.147a.5.5 0 1 1-.708-.708z" />
@@ -71,17 +68,15 @@ function Navbar() {
               <img
                 src={profilePic}
                 alt="Profile Image"
-                className="w-12 h-12 rounded-full "
+                className=" rounded-full w-14 h-14 sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-10 lg:h-10"
                 onClick={handleProfile}
               />
             ) : (
               <span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="50"
-                  height="50"
                   fill="currentColor"
-                  className="bi bi-person-square cursor-pointer transition-transform duration-300 hover:scale-125 w-12 h-12 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+                  className="bi bi-person-square cursor-pointer transition-transform duration-0 hover:scale-125 w-14 h-14 sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-10 lg:h-10"
                   viewBox="0 0 16 16"
                   onClick={handleProfile}
                 >
@@ -94,10 +89,8 @@ function Navbar() {
             <span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="50"
-                height="50"
                 fill="currentColor"
-                className="bi bi-person-square cursor-pointer transition-transform duration-300 hover:scale-125 w-12 h-12 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+                className="bi bi-person-square cursor-pointer transition-transform duration-0 hover:scale-125 w-14 h-14 sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-10 lg:h-10"
                 viewBox="0 0 16 16"
               >
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -109,9 +102,9 @@ function Navbar() {
       </ul>
 
       {/* Center (Title) */}
-      <div className="flex items-center justify-center transition-transform duration-300 hover:scale-125 cursor-pointer">
+      <div className="flex items-center justify-center space-x-4 sm:space-x-3 md:space-x-4 lg:space-x-6 transition-transform duration-0 hover:scale-125 cursor-pointer">
         <h1
-          className="text-4xl "
+          className="text-4xl text-5xl lg:text-6xl font-bold text-black"
           style={titleFont}
           onClick={handleHome}
         >
@@ -119,10 +112,10 @@ function Navbar() {
         </h1>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="43"
-          height="43"
+          width="60"
+          height="60"
           fill="currentColor"
-          className="bi bi-bezier2"
+          className="bi bi-bezier2 text-black"
           viewBox="0 0 16 16"
         >
           <path
@@ -133,15 +126,13 @@ function Navbar() {
       </div>
 
       {/* Right side (People icon) */}
-      <ul className="flex space-x-4">
+      <ul className="flex space-x-6 sm:space-x-4">
         <li title="Login">
           {loggedIn ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="50"
-              height="50"
               fill="currentColor"
-              className="bi bi-box-arrow-right cursor-pointer transition-transform duration-300 w-12 h-12 hover:scale-125 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+              className="bi bi-box-arrow-right cursor-pointer transition-transform duration-0 hover:scale-125 w-14 h-14 sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-10 lg:h-10"
               viewBox="0 0 16 16"
               onClick={handleLogout}
             >
@@ -157,10 +148,8 @@ function Navbar() {
           ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="50"
-              height="50"
               fill="currentColor"
-              className="bi bi-people-fill cursor-pointer transition-transform duration-300 hover:scale-125 w-12 h-12 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+              className="bi bi-people-fill cursor-pointer transition-transform duration-0 hover:scale-125 w-14 h-14 sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-10 lg:h-10"
               viewBox="0 0 16 16"
               onClick={handleLogin}
             >

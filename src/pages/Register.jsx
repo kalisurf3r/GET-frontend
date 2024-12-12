@@ -103,7 +103,7 @@ function Register() {
     <>
       <div className="min-h-screen">
         <div className="pt-8">
-          <h1 className="text-4xl text-center cursor-default">Register </h1>
+          <h1 className="text-5xl sm:text-6xl text-gray-200 text-center font-extrabold  tracking-wide cursor-default drop-shadow-md transition-colors duration-300 hover:text-green-500 ">Register </h1>
         </div>
 
         <div>
@@ -111,7 +111,7 @@ function Register() {
             className="flex flex-col items-center mt-10"
             onSubmit={handleSubmit}
           >
-            <label htmlFor="email" className="text-xl mb-2">
+            <label htmlFor="email" className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200">
               Email
             </label>
             <input
@@ -119,12 +119,12 @@ function Register() {
               id="newemail"
               name="email"
               value={email}
-              className="mb-2 border-2 border-black p-2 rounded-lg w-80 transition-transform duration-300 hover:scale-110  bg-zinc-300"
+              className="border-2 border-black p-3 rounded-lg w-80 sm:w-96 transition-transform duration-300 hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-zinc-200 placeholder-gray-500 text-lg sm:text-xl"
               placeholder="Your Email"
               autoComplete="new-email"
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label htmlFor="newusername" className="text-xl mb-2">
+            <label htmlFor="newusername" className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200">
               Username
             </label>
             <input
@@ -132,12 +132,12 @@ function Register() {
               id="newusername"
               name="username"
               value={userName}
-              className="border-2 border-black p-2 rounded-lg w-80 transition-transform duration-300 hover:scale-110  bg-zinc-300"
+              className="border-2 border-black p-3 rounded-lg w-80 sm:w-96 transition-transform duration-300 hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-zinc-200 placeholder-gray-500 text-lg sm:text-xl"
               placeholder="New Username"
               autoComplete="new-username"
               onChange={(e) => setUserName(e.target.value)}
             />
-            <label htmlFor="password" className="mt-4 text-xl mb-2">
+            <label htmlFor="password" className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200">
               Password
             </label>
             <input
@@ -145,16 +145,16 @@ function Register() {
               id="newpassword"
               name="password"
               value={password}
-              className="border-2 border-black p-2 rounded-lg w-80 transition-transform duration-300 hover:scale-110  bg-zinc-300"
+              className="border-2 border-black p-3 rounded-lg w-80 sm:w-96 transition-transform duration-300 hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-zinc-200 placeholder-gray-500 text-lg sm:text-xl"
               placeholder="New Password"
               autoComplete="new-password"
               onChange={handlePasswordChange}
             />
-            <div className="mt-6 flex flex-col items-start">
+            <div className="mt-6 flex flex-col items-start space-y-3">
               <div
                 className={`flex items-center ${
                   hasMinLength ? "text-green-500" : "text-red-700"
-                }`}
+                } text-lg sm:text-xl md:text-2xl `}
               >
                 <span className="mr-2">
                   <svg
@@ -173,7 +173,7 @@ function Register() {
               <div
                 className={`flex items-center ${
                   hasLetter ? "text-green-500" : "text-red-700"
-                }`}
+                } text-lg sm:text-xl md:text-2xl `}
               >
                 <span className="mr-2">
                   <svg
@@ -192,7 +192,7 @@ function Register() {
               <div
                 className={`flex items-center ${
                   hasNumber ? "text-green-500" : "text-red-700"
-                }`}
+                } text-lg sm:text-xl md:text-2xl `}
               >
                 <span className="mr-2">
                   <svg
@@ -210,23 +210,21 @@ function Register() {
               </div>
             </div>
 
-            <div className="flex space-x-4">
+            <div className="flex flex-wrap items-center justify-center space-x-6 sm:space-x-8 mt-6">
               <UploadWidget onUpload={handleImageUpload} />
               {profilePic ? (
                 <img
                   id="profileImgContainer"
                   src={profilePic}
                   alt="Profile Image Preview"
-                  className="w-20 h-20 mt-4 rounded-full border-2 border-black"
+                  className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mt-4 rounded-full"
                 />
               ) : (
                 <svg
                   id="profileImgContainer"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="80"
-                  height="80"
                   fill="currentColor"
-                  className="bi bi-person-bounding-box mt-4 w-20 h-20 rounded-full border-2 border-black"
+                  className="bi bi-person-bounding-box  mt-4 w-30 h-30 sm:w-40 sm:h-40 md:w-40 md:h-40 rounded-full"
                   viewBox="0 0 16 16"
                 >
                   <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5" />
@@ -237,14 +235,14 @@ function Register() {
 
             <TopicSelector setTopics={setTopics}/>
 
-            <button className="bg-blue-500 flex text-white text-xl py-2 px-6 rounded-full mt-8 transition-transform duration-300 hover:scale-125">
+            <button className="bg-blue-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl py-3 px-8 sm:px-10 rounded-full mt-8 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-blue-500">
               Register
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="24"
+                height="24"
                 fill="currentColor"
-                className="bi bi-person-workspace ml-2 mt-1"
+                className="bi bi-person-workspace ml-3 mt-1"
                 viewBox="0 0 16 16"
               >
                 <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />

@@ -1,0 +1,31 @@
+/* Modal Backdrop */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 9999;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Close Button */
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10000;
+    cursor: pointer;
+  }
