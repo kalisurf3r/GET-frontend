@@ -5,12 +5,10 @@ import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 import { UserProvider } from "./components/UserContext"
 
+// * all data being passed down through the app
+
 function App() {
  
- 
-
-
-
   return (
     <>
   <UserProvider>

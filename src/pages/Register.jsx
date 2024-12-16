@@ -1,26 +1,30 @@
 import UploadWidget from "../components/Cloudinary";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {Filter} from "bad-words";
+import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 import TopicSelector from "../components/TopicSelector";
 
 function Register() {
-
+  // * filter to check for profanity
   const filter = new Filter();
 
+  // * profile picture upload
   const [profilePic, setProfilePic] = useState(null);
   const handleImageUpload = (url) => {
     setProfilePic(url);
   };
 
+  // * states to store user data
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [topics, setTopics] = useState([]);
 
+  // * navigate setup
   const navigate = useNavigate();
 
+  // * password validation
   const [hasMinLength, setHasMinLength] = useState(false);
   const [hasLetter, setHasLetter] = useState(false);
   const [hasNumber, setHasNumber] = useState(false);
@@ -33,7 +37,9 @@ function Register() {
 
     // * check if username has profanity
     if (filter.isProfane(sanitizedUserName)) {
-      alert("Username contains inappropriate language. Please choose another one.");
+      alert(
+        "Username contains inappropriate language. Please choose another one."
+      );
       return;
     }
 
@@ -55,7 +61,7 @@ function Register() {
       );
       return;
     }
-
+    // * user registration
     try {
       const response = await fetch("http://localhost:3004/users/signup", {
         method: "POST",
@@ -78,6 +84,7 @@ function Register() {
     }
   };
 
+  // * fetch all users to check if username already exists
   const getAllUsers = async () => {
     try {
       const response = await fetch("http://localhost:3004/users");
@@ -103,7 +110,9 @@ function Register() {
     <>
       <div className="min-h-screen">
         <div className="pt-8">
-          <h1 className="text-5xl sm:text-6xl text-gray-200 text-center font-extrabold  tracking-wide cursor-default drop-shadow-md transition-colors duration-300 hover:text-green-500 ">Register </h1>
+          <h1 className="text-5xl sm:text-6xl text-gray-200 text-center font-extrabold  tracking-wide cursor-default drop-shadow-md transition-colors duration-300 hover:text-green-500 ">
+            Register{" "}
+          </h1>
         </div>
 
         <div>
@@ -111,7 +120,10 @@ function Register() {
             className="flex flex-col items-center mt-10"
             onSubmit={handleSubmit}
           >
-            <label htmlFor="email" className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200">
+            <label
+              htmlFor="email"
+              className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200"
+            >
               Email
             </label>
             <input
@@ -124,7 +136,10 @@ function Register() {
               autoComplete="new-email"
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label htmlFor="newusername" className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200">
+            <label
+              htmlFor="newusername"
+              className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200"
+            >
               Username
             </label>
             <input
@@ -137,7 +152,10 @@ function Register() {
               autoComplete="new-username"
               onChange={(e) => setUserName(e.target.value)}
             />
-            <label htmlFor="password" className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200">
+            <label
+              htmlFor="password"
+              className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200"
+            >
               Password
             </label>
             <input
@@ -233,7 +251,7 @@ function Register() {
               )}
             </div>
 
-            <TopicSelector setTopics={setTopics}/>
+            <TopicSelector setTopics={setTopics} />
 
             <button className="bg-blue-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl py-3 px-8 sm:px-10 rounded-full mt-8 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-blue-500">
               Register
@@ -249,7 +267,6 @@ function Register() {
                 <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z" />
               </svg>
             </button>
-          
           </form>
         </div>
       </div>

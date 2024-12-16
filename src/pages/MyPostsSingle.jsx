@@ -2,11 +2,13 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function MyPostsSingle() {
+  // * Get post id from URL
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // * Fetch post data
   useEffect(() => {
     const fetchPost = async () => {
       try {

@@ -4,13 +4,16 @@ import { UserContext } from "../components/UserContext";
 import { set } from "@cloudinary/url-gen/actions/variable";
 
 function Navbar() {
+  // * states to store user data
   const [profilePic, setProfilePic] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
   const [isHandlingProfile, setIsHandlingProfile] = useState(false);
 
+  // * fetch logged in user data
   const { user } = useContext(UserContext);
 
+  // * navigate to different pages
   const navigate = useNavigate();
   const handleLogin = () => {
     navigate("/login");
@@ -26,6 +29,7 @@ function Navbar() {
     setIsHandlingProfile(false);
   };
 
+  // * fetch user data from localStorage
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.user) {
@@ -35,6 +39,8 @@ function Navbar() {
       setLoggedIn(true);
     }
   }, [user]);
+
+  // * handle logout
   const handleLogout = () => {
     localStorage.clear();
     window.location.reload();

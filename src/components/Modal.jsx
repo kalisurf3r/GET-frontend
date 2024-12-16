@@ -13,12 +13,6 @@ function Modal({ isOpen, onClose, children, style }) {
         style={style}
         onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside
       >
-        {/* <button
-          className="absolute top-2 right-2 z-[10000] text-xl font-bold text-gray-600 hover:text-gray-900"
-          onClick={onClose}
-        >
-          &times;
-        </button> */}
         {children}
       </div>
     </div>,

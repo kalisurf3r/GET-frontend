@@ -1,11 +1,10 @@
 function Footer() {
-  
   const styles = {
-      fontFamily: "Roboto Condensed, Roboto, sans-serif"
+    fontFamily: "Roboto Condensed, Roboto, sans-serif",
   };
-  
-    return (
-      <footer
+
+  return (
+    <footer
       className="w-full py-6 bg-gradient-to-r from-slate-600 to-slate-800 text-white font-medium shadow-lg"
       style={styles}
     >

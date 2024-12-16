@@ -11,6 +11,7 @@ import TopicPosts from "../components/TopicPosts";
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // * Prevent scrolling when modal is open
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
@@ -19,6 +20,7 @@ function Home() {
     }
   }, [isModalOpen]);
 
+  // * Check if user is logged in to show modal
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -30,6 +32,7 @@ function Home() {
     setIsModalOpen(false);
   };
 
+  // * navigate to different pages
   const navigate = useNavigate();
   const handleLogin = () => {
     navigate("/login");
@@ -38,10 +41,12 @@ function Home() {
     navigate("/register");
   };
 
+  // * states to store note title topics
   const [note, setNote] = useState("");
   const [title, setTitle] = useState("");
   const [topics, setTopics] = useState([]);
 
+  // * function to create a post
   const makePost = async () => {
     try {
       console.log("Topics at the time of submission:", topics);
@@ -55,7 +60,6 @@ function Home() {
 
       console.log("Using token:", token);
 
-      // Example: Sending the note to a backend API
       const response = await fetch("http://localhost:3004/posts/", {
         method: "POST",
         headers: {
@@ -64,11 +68,11 @@ function Home() {
         },
         body: JSON.stringify({
           user_id: user.id,
-          date: new Date().toISOString(), // Example date
-          title: title, // Replace with actual title
+          date: new Date().toISOString(),
+          title: title,
           content: note,
-          likes: 0, // Default value
-          dislikes: 0, // Default value
+          likes: 0,
+          dislikes: 0,
           topics: topics,
         }),
       });
@@ -88,8 +92,6 @@ function Home() {
       console.error("Error creating post:", error);
     }
   };
-
-  
 
   // * Filter out bad words & sanitize inputs
   const filter = new Filter();
@@ -140,7 +142,7 @@ function Home() {
               ></textarea>
             </div>
 
-            <TopicPosts setTopics={setTopics}/>
+            <TopicPosts setTopics={setTopics} />
 
             <div className="flex justify-center">
               <button
@@ -154,7 +156,7 @@ function Home() {
         </div>
 
         <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <div className="fixed inset-0 bg-black bg-opacity-75 z-40"></div>
+          <div className="fixed inset-0 bg-black bg-opacity-75 z-40"></div>
           <div className="relative z-50 bg-gray-900  p-8 rounded-lg shadow-xl w-full sm:w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto text-gray-100 transform scale-95 transition-transform duration-300 ease-in-out min-h-[50vh] max-h-[90vh] overflow-y-auto">
             <h2 className="text-4xl font-bold mb-6 text-center">
               Welcome Programmer
@@ -162,9 +164,9 @@ function Home() {
             <p className=" text-lg mt-8 mb-6 text-center leading-relaxed">
               <span className="font-semibold text-gray-100">GET</span> is your
               personal digital diary and note-taking companion built especially
-              for <em className="font-bold text-gray-200">coders</em>. Jot down your thoughts,
-              document your journey, and share your ideas with the world. Let’s
-              build something great together.
+              for <em className="font-bold text-gray-200">coders</em>. Jot down
+              your thoughts, document your journey, and share your ideas with
+              the world. Let’s build something great together.
             </p>
             <div className="space-y-6 mt-10">
               <p className="flex items-center justify-center text-gray-100 text-lg font-semibold space-x-2 mt-6 bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700 hover:bg-green-600 hover:scale-105 transition-transform duration-300">

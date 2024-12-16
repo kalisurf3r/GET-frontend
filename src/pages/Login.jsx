@@ -2,21 +2,22 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UserContext } from "../components/UserContext";
 
-
-
 function Login(props) {
-  const {setUser} = useContext(UserContext);
+  // * start using context
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  
+
+  // * navigate to different pages
   const handleRegister = () => {
-    
     navigate("/register");
     window.location.reload();
   };
 
+  // * states to store user data
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
+  // * function to handle user login
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,7 +37,7 @@ function Login(props) {
         localStorage.setItem("user", JSON.stringify(data));
         localStorage.setItem("token", token);
         setUser(data.user);
-       navigate("/");
+        navigate("/");
       }
     } catch (error) {
       console.error(error);
@@ -46,7 +47,9 @@ function Login(props) {
   return (
     <div className="min-h-screen">
       <div className="pt-8">
-        <h1 className="text-5xl sm:text-6xl text-center text-gray-200 font-extrabold  tracking-wide cursor-default drop-shadow-md transition-colors duration-300 hover:text-green-500 ">Login</h1>
+        <h1 className="text-5xl sm:text-6xl text-center text-gray-200 font-extrabold  tracking-wide cursor-default drop-shadow-md transition-colors duration-300 hover:text-green-500 ">
+          Login
+        </h1>
       </div>
 
       <div>
@@ -54,7 +57,10 @@ function Login(props) {
           className="flex flex-col items-center mt-10"
           onSubmit={handleSubmit}
         >
-          <label htmlFor="username" className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200">
+          <label
+            htmlFor="username"
+            className="text-xl sm:text-2xl mb-2 font-semibold text-gray-200"
+          >
             Username
           </label>
           <input
@@ -66,7 +72,10 @@ function Login(props) {
             autoComplete="username"
             onChange={(e) => setUserName(e.target.value)}
           />
-          <label htmlFor="password" className="mt-4 text-xl sm:text-2xl mb-2 font-semibold text-gray-200">
+          <label
+            htmlFor="password"
+            className="mt-4 text-xl sm:text-2xl mb-2 font-semibold text-gray-200"
+          >
             Password
           </label>
           <input
@@ -78,17 +87,20 @@ function Login(props) {
             autoComplete="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="bg-blue-500 text-white text-xl sm:text-2xl md:text-3xl py-3 px-6 sm:py-4 sm:px-8 rounded-full mt-8 transition-transform duration-300 hover:scale-125 hover:bg-blue-600">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white text-xl sm:text-2xl md:text-3xl py-3 px-6 sm:py-4 sm:px-8 rounded-full mt-8 transition-transform duration-300 hover:scale-125 hover:bg-blue-600"
+          >
             Login
           </button>
 
           <h3 className="mt-6 text-lg sm:text-xl md:text-2xl flex justify-center items-center text-gray-200">
             Not a Member?&nbsp;
             <span
-              className="italic text-green-500 cursor-pointer font-semibold transition-transform duration-300 hover:scale-110 hover:text-green-400 focus:ring-2 focus:ring-blue-500 rounded" 
+              className="italic text-green-500 cursor-pointer font-semibold transition-transform duration-300 hover:scale-110 hover:text-green-400 focus:ring-2 focus:ring-blue-500 rounded"
               onClick={handleRegister}
             >
-               Click Here
+              Click Here
             </span>
           </h3>
         </form>

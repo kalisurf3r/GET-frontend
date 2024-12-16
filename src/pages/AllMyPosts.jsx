@@ -8,10 +8,10 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AllMyPosts(user) {
-  // const { id } = useParams();
+  // * carry user data from context
   const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
-
+  // * states for loading posts
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -89,7 +89,7 @@ function AllMyPosts(user) {
       }
       const data = await response.json();
       console.log("Updated post data:", data);
-      // Update the post in the state
+      // * Update the post in the state
       setPost((prevPosts) =>
         prevPosts.map((p) => (p.id === post.id ? data : p))
       );
@@ -104,6 +104,7 @@ function AllMyPosts(user) {
   // * open modal to view profile settings
   const [showSettings, setShowSettings] = useState(false);
 
+  // * restrict scrolling when modal is open
   useEffect(() => {
     if (setShowSettings) {
       document.body.style.overflow = "hidden";
@@ -116,12 +117,15 @@ function AllMyPosts(user) {
     };
   }, [showSettings]);
 
+  // * setting new user data
   const [userData, setUserData] = useState({
     email: "",
     userName: "",
     password: "",
     profilePic: "",
   });
+
+  // * setting initial user data
   const [originalUserData, setOriginalUserData] = useState({
     email: "",
     userName: "",
@@ -129,6 +133,7 @@ function AllMyPosts(user) {
     profilePic: "",
   });
 
+  // * handle image upload
   const [profilePic, setProfilePic] = useState("");
   const handleImageUpload = (url) => {
     setProfilePic(url);
@@ -138,6 +143,7 @@ function AllMyPosts(user) {
     }));
   };
 
+  // * open settings load
   const handleSettingsOpenClick = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const id = user.user.id;
@@ -160,6 +166,7 @@ function AllMyPosts(user) {
     }
   };
 
+  // * save settings
   const handleSettingsSaveClick = async (event) => {
     if (event) {
       event.preventDefault();
@@ -233,8 +240,7 @@ function AllMyPosts(user) {
       console.log("Updated user data:", data);
       localStorage.setItem("user", JSON.stringify(data));
       setOriginalUserData({ ...originalUserData, ...updatedData });
-      // * update user context
-      // updateUser(data);
+
       setShowSettings(false);
       navigate("/");
     } catch (error) {

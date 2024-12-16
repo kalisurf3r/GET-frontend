@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function List() {
+  // * states to store user data
   const [loggedIn, setLoggedIn] = useState(false);
   const [displayPosts, setDisplayPosts] = useState(false);
   const [userId, setUserId] = useState(null);
   const [posts, setPosts] = useState([]);
 
+  // * fetch logged in user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -45,6 +47,7 @@ function List() {
     fetchUserData();
   }, []);
 
+  // * fetch posts for logged in user
   useEffect(() => {
     const fetchPosts = async () => {
       try {

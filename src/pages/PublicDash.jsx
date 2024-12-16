@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PublicPost from "../components/PublicPost";
-import Comment from "../components/Comment";
+
 import Filters from "../components/FilterPosts";
 
 function PublicDash() {
+
+  // * states for loading posts
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // * states to store all posts, selected topics and filtered posts
   const [allPosts, setAllPosts] = useState([]);
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
 
+  // * topics to filter posts
+  
   const topics = [
     "React",
     "JavaScript",
@@ -36,13 +41,14 @@ function PublicDash() {
     "Testing",
   ];
 
+  // * function to handle topic change
   const handleTopicChange = (topic) => {
     const updatedTopics = selectedTopics.includes(topic) // Check if topic is already selected
       ? selectedTopics.filter((t) => t !== topic) // Remove topic if already selected
       : [...selectedTopics, topic]; // Add topic if not selected
     setSelectedTopics(updatedTopics);
 
-    // Filter posts based on updated topics
+    // * Filter posts based on updated topics
     const filtered =
       updatedTopics.length > 0 // if there are selected topics
         ? allPosts.filter(
@@ -56,8 +62,10 @@ function PublicDash() {
     setFilteredPosts(filtered);
   };
 
+  // * default image for user profile
   const defaultImg = "./avatar.png";
 
+  // * fetch all posts
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
@@ -85,6 +93,7 @@ function PublicDash() {
     fetchAllPosts();
   }, []);
 
+  // * handle like update
   const handleLikeUpdate = (id, newLikeCount) => {
     setPost((prevPosts) => {
       const updatedPosts = prevPosts.map((post) =>
@@ -97,6 +106,7 @@ function PublicDash() {
     });
   };
 
+  // * handle dislike update
   const handleDislikeUpdate = (id, newDislikeCount) => {
     setPost((prevPosts) => {
       const updatedPosts = prevPosts.map((post) =>
@@ -109,6 +119,7 @@ function PublicDash() {
     });
   };
 
+  // * handle comment update
   const handleCommentUpdate = (id, newCommentCount) => {
     setPost((prevPosts) => {
       const updatedPosts = prevPosts.map((post) =>
@@ -121,6 +132,7 @@ function PublicDash() {
     });
   };
 
+  // * handle liked comment update
   const handleLikedCommentUpdate = (id, newLikedCommentCount) => {
     setPost((prevPosts) => {
       const updatedPosts = prevPosts.map((post) =>

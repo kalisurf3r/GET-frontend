@@ -8,9 +8,12 @@ import Modal from "../components/Modal";
 import "../components/modal.css";
 
 function ViewProfile() {
+  // * fetch user data from location state
   const location = useLocation();
   const [userData, setUserData] = useState(location.state || {});
   const [posts, setPosts] = useState([]);
+
+  // * fetch comments on user's posts
   const [comments, setComments] = useState([]);
   const [commentsVisible, setCommentsVisible] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
@@ -145,6 +148,7 @@ function ViewProfile() {
     }
   };
 
+  // * subscribe user to email notifications
   const handleSubscribe = () => {
     const subscribeUser = async () => {
       const subscribedTo = userData.userId;
@@ -208,6 +212,7 @@ function ViewProfile() {
     return <p>Loading...</p>;
   }
 
+  // * disable scrolling when modal is open
   useEffect(() => {
     if (modalVisible) {
       document.body.style.overflow = "hidden";
@@ -326,25 +331,25 @@ function ViewProfile() {
           </p>
 
           <ul className="flex flex-wrap gap-2 mt-4 ml-8 text-lg md:text-xl lg:text-2xl text-gray-800">
-  {Array.isArray(userData.topics) && userData.topics.length > 0 ? (
-    userData.topics.map((topic, index) => (
-      <li
-        key={index}
-        className="bg-green-600 text-white text-center px-4 py-2 rounded-full shadow-md hover:bg-green-500 hover:scale-105 transition-transform duration-200 cursor-pointer"
-        style={{
-          display: "inline-block",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-      >
-        {topic}
-      </li>
-    ))
-  ) : (
-    <li className="text-gray-200">No topics available</li>
-  )}
-</ul>
+            {Array.isArray(userData.topics) && userData.topics.length > 0 ? (
+              userData.topics.map((topic, index) => (
+                <li
+                  key={index}
+                  className="bg-green-600 text-white text-center px-4 py-2 rounded-full shadow-md hover:bg-green-500 hover:scale-105 transition-transform duration-200 cursor-pointer"
+                  style={{
+                    display: "inline-block",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {topic}
+                </li>
+              ))
+            ) : (
+              <li className="text-gray-200">No topics available</li>
+            )}
+          </ul>
         </div>
       </div>
 
@@ -359,7 +364,12 @@ function ViewProfile() {
                 <h1 className="ml-2 text-gray-200 text-2xl md:text-3xl lg:text-4xl font-bold ">
                   {post.title}
                 </h1>
-                <h1 className=" text-lg mt-4 md:text-xl lg:text-2xl font-bold text-gray-200 tracking-wide text-center break-words">Topics: {Array.isArray(post.topics) ? post.topics.join(", ") : "No topics"}</h1>
+                <h1 className=" text-lg mt-4 md:text-xl lg:text-2xl font-bold text-gray-200 tracking-wide text-center break-words">
+                  Topics:{" "}
+                  {Array.isArray(post.topics)
+                    ? post.topics.join(", ")
+                    : "No topics"}
+                </h1>
               </div>
               <p className="text-center mt-4 px-4 mt-2 text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed ">
                 {post.content}

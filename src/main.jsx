@@ -14,6 +14,7 @@ import AllMyPosts from './pages/AllMyPosts.jsx'
 import PublicDash from './pages/PublicDash.jsx'
 import ViewProfile from './pages/ViewProfiles.jsx'
 
+// * create routes for the app
 
 const router = createBrowserRouter([
   {
