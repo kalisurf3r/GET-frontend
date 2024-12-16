@@ -4,13 +4,26 @@ const TopicSelector = ({ setTopics }) => {
   const [selectedTopics, setSelectedTopics] = useState([]);
 
   const topics = [
-    "React",
-    "JavaScript",
-    "Node",
-    "CSS",
-    "HTML",
-    "Python",
-    "Data Structures",
+   "React",
+  "JavaScript",
+  "Node",
+  "CSS",
+  "HTML",
+  "Python",
+  "Data Structures",
+  "Algorithms",
+  "TypeScript",
+  "GraphQL",
+  "Redux",
+  "Vue",
+  "Angular",
+  "Next.js",
+  "Express",
+  "MongoDB",
+  "SQL",
+  "NoSQL",
+  "Web Security",
+  "Testing",
   ];
 
   const handleTopicChange = (topic) => {

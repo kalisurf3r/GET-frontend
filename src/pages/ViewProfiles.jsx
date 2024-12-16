@@ -325,20 +325,26 @@ function ViewProfile() {
             Tags :
           </p>
 
-          <ul className=" space-y-2 mt-4 list-disc list-inside text-lg md:text-xl lg:text-2xl text-gray-800">
-            {Array.isArray(userData.topics) && userData.topics.length > 0 ? (
-              userData.topics.map((topic, index) => (
-                <li
-                  key={index}
-                  className="bg-green-600 text-white text-center px-2 py-2 rounded-lg shadow-md hover:bg-green-500 hover:scale-105 transition-transform duration-200 cursor-pointer"
-                >
-                  {topic}
-                </li>
-              ))
-            ) : (
-              <li className="text-gray-200">No topics available</li>
-            )}
-          </ul>
+          <ul className="flex flex-wrap gap-2 mt-4 ml-8 text-lg md:text-xl lg:text-2xl text-gray-800">
+  {Array.isArray(userData.topics) && userData.topics.length > 0 ? (
+    userData.topics.map((topic, index) => (
+      <li
+        key={index}
+        className="bg-green-600 text-white text-center px-4 py-2 rounded-full shadow-md hover:bg-green-500 hover:scale-105 transition-transform duration-200 cursor-pointer"
+        style={{
+          display: "inline-block",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {topic}
+      </li>
+    ))
+  ) : (
+    <li className="text-gray-200">No topics available</li>
+  )}
+</ul>
         </div>
       </div>
 
@@ -348,11 +354,12 @@ function ViewProfile() {
         </p>
         {posts.map((post) => (
           <React.Fragment key={post.id}>
-            <div className="w-full  lg:w-3/4 xl:w-2/3 shadow-lg border-4 border-gray-200 border-dotted border-gray-800 hover:border-green-500 transition-colors duration-300 p-4 mb-6 mt-10 lg:scale-110 lg:p-8">
-              <div className="flex justify-between border-2 border-gray-300 p-2 lg:p-4">
-                <h1 className="ml-2 text-gray-200 text-2xl md:text-3xl lg:text-4xl font-bold">
+            <div className="w-full  lg:w-4/5 xl:w-3/4 shadow-lg border-4 border-gray-200 border-dotted border-gray-800 hover:border-green-500 transition-colors duration-300 p-6 mb-6 mt-10 lg:scale-110 lg:p-8">
+              <div className="flex flex-col justify-between border-2 border-gray-300 p-2 lg:p-6">
+                <h1 className="ml-2 text-gray-200 text-2xl md:text-3xl lg:text-4xl font-bold ">
                   {post.title}
                 </h1>
+                <h1 className=" text-lg mt-4 md:text-xl lg:text-2xl font-bold text-gray-200 tracking-wide text-center break-words">Topics: {Array.isArray(post.topics) ? post.topics.join(", ") : "No topics"}</h1>
               </div>
               <p className="text-center mt-4 px-4 mt-2 text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed ">
                 {post.content}

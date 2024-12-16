@@ -16,6 +16,7 @@ function PublicPost({
   content,
   imageUrl,
   topics,
+  topicsPosts,
   likes,
   dislikes,
   createdAt,
@@ -48,8 +49,6 @@ function PublicPost({
   const [dislikeCount, setDislikeCount] = useState(dislikes);
   const [isDisliked, setIsDisliked] = useState(false);
   const [dislikedPosts, setDislikedPosts] = useState([]);
-
-  
 
   // * check if post is liked
   useEffect(() => {
@@ -146,18 +145,18 @@ function PublicPost({
   const [comments, setComments] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-const [comTitle, setComTitle] = useState("");
-const [comContent, setComContent] = useState("");
-const [comDate, setComDate] = useState("");
-const [comPostId, setComPostId] = useState("");
+  const [comTitle, setComTitle] = useState("");
+  const [comContent, setComContent] = useState("");
+  const [comDate, setComDate] = useState("");
+  const [comPostId, setComPostId] = useState("");
 
-useEffect(() => {
-  if (isModalOpen) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "auto";
-  }
-}, [isModalOpen]);
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isModalOpen]);
 
   // * filter for profanity
   const filter = new Filter();
@@ -361,6 +360,7 @@ useEffect(() => {
             <h1 className="text-lg text-gray-200 md:text-xl lg:text-2xl font-bold">
               {title}
             </h1>
+            <h1 className="text-lg mt-4 md:text-xl lg:text-2xl font-bold text-gray-200 tracking-wide text-center"> Topics: {Array.isArray(topicsPosts) ? topicsPosts.join(", ") : "No topics"}</h1>
           </div>
 
           <div className="content  mt-4">

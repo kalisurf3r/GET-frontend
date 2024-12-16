@@ -88,15 +88,20 @@ function List() {
     }
   }, [userId]);
 
+  const sortedPosts = posts
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort in descending order by date
+    .slice(0, 5);
+
   return (
-    <div className="min-h-full flex flex-col p-6 border-4 border-gray-200 border-dashed rounded-lg shadow-lg mt-10 sm:mt-10 sm:mr-4 sm:p-2 md:p-4 lg:p-6">
+    <div className="min-h-[85vh]  flex flex-col mr-6 p-6 border-4 border-gray-200 border-dashed rounded-lg shadow-lg mt-10 sm:mt-10 sm:p-2 md:p-4 lg:p-6">
       <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-100 underline mt-4 md:mt-6 lg:mt-8 text-center transition-colors duration-300 hover:text-green-500">
         Most Recent:
       </h3>
 
       {loggedIn && displayPosts && posts.length > 0 && (
         <ul className=" mt-6  text-2xl space-y-4 sm:mt-2 sm:text-xl sm:space-y-2 md:mt-4 md:text-2xl md:space-y-4">
-          {posts.slice(0, 5).map((post) => (
+          {sortedPosts.slice(0, 5).map((post) => (
             <li
               key={post.id}
               className="text-gray-100 text-center font-medium hover:text-green-500 transition-colors duration-300"

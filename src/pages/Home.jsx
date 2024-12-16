@@ -6,6 +6,7 @@ import Modal from "../components/Modal";
 import { set } from "@cloudinary/url-gen/actions/variable";
 import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
+import TopicPosts from "../components/TopicPosts";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,9 +40,11 @@ function Home() {
 
   const [note, setNote] = useState("");
   const [title, setTitle] = useState("");
+  const [topics, setTopics] = useState([]);
 
   const makePost = async () => {
     try {
+      console.log("Topics at the time of submission:", topics);
       const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
 
@@ -66,6 +69,7 @@ function Home() {
           content: note,
           likes: 0, // Default value
           dislikes: 0, // Default value
+          topics: topics,
         }),
       });
 
@@ -74,6 +78,7 @@ function Home() {
         console.log("Post created:", result);
         setNote("");
         setTitle("");
+        setTopics([]);
         window.location.reload();
       } else {
         const errorText = await response.text();
@@ -83,6 +88,8 @@ function Home() {
       console.error("Error creating post:", error);
     }
   };
+
+  
 
   // * Filter out bad words & sanitize inputs
   const filter = new Filter();
@@ -133,9 +140,11 @@ function Home() {
               ></textarea>
             </div>
 
+            <TopicPosts setTopics={setTopics}/>
+
             <div className="flex justify-center">
               <button
-                className="bg-blue-600 text-white py-4 px-6  rounded-full mt-4 text-lg sm:text-xl md:text-2xl lg:text-2xl transition-transform duration-300 hover:scale-125 hover:bg-blue-500 cursor-pointer"
+                className="bg-blue-600 text-white py-4 px-6  rounded-full mt-4 mb-4 text-lg sm:text-xl md:text-2xl lg:text-2xl transition-transform duration-300 hover:scale-125 hover:bg-blue-500 cursor-pointer"
                 onClick={makePost}
               >
                 Make Post

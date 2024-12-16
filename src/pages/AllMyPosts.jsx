@@ -110,7 +110,11 @@ function AllMyPosts(user) {
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [setShowSettings]);
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showSettings]);
 
   const [userData, setUserData] = useState({
     email: "",
@@ -372,26 +376,27 @@ function AllMyPosts(user) {
         )}
       </div>
       {post.map((post) => (
-      
-       
         <div
           key={post.id}
           className="w-full  max-w-4xl lg:w-3/4 xl:w-2/3 mx-auto shadow-lg border-4 border-gray-200 border-dotted hover:border-green-500 transition-colors duration-300 p-4 mb-6 mt-10 lg:scale-110 lg:p-8"
         >
-            <div className="relative">
-         <button onClick={() => handleEditClick(post)} className="absolute top-2 right-1 py-2 px-3 bg-gray-700 rounded-full shadow-md hover:bg-gray-600 hover:shadow-lg transition-transform duration-300 flex justify-center">
-           <svg
-             xmlns="http://www.w3.org/2000/svg"
-             width="25"
-             height="25"
-             fill="currentColor"
-             className="bi bi-pencil mr-2 text-gray-200 transition-transform duration-300 hover:scale-125"
-             viewBox="0 0 16 16"
-           >
-             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-           </svg>
-         </button>
-         </div>
+          <div className="relative">
+            <button
+              onClick={() => handleEditClick(post)}
+              className="absolute top-2 right-1 py-2 px-3 bg-gray-700 rounded-full shadow-md hover:bg-gray-600 hover:shadow-lg transition-transform duration-300 flex justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                fill="currentColor"
+                className="bi bi-pencil mr-2 text-gray-200 transition-transform duration-300 hover:scale-125"
+                viewBox="0 0 16 16"
+              >
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+              </svg>
+            </button>
+          </div>
           <div className="flex flex-col w-full space-y-4 p-4  border-2 border-gray-300 shadow-lg">
             {editingPostId === post.id ? (
               <input
@@ -402,9 +407,17 @@ function AllMyPosts(user) {
                 className="w-full py-2 px-4 text-lg font-semibold text-gray-900 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 placeholder-gray-400"
               />
             ) : (
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-200 mt-2 ml-2 tracking-wide ">{post.title}</h1>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-200 mt-2 ml-2 tracking-wide ">
+                {post.title}
+              </h1>
             )}
-           
+            <h1 className=" text-xl mt-4 md:text-2xl lg:text-3xl font-bold text-gray-200 tracking-wide text-center">
+              {" "}
+              Topics:{" "}
+              {Array.isArray(post.topics)
+                ? post.topics.join(", ")
+                : "No topics"}
+            </h1>
           </div>
           {editingPostId === post.id ? (
             <textarea
@@ -414,7 +427,9 @@ function AllMyPosts(user) {
               className="w-full py-2 px-4 text-base text-gray-900 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 placeholder-gray-400 resize-none "
             />
           ) : (
-            <p className="text-center text-lg md:text-xl lg:text-2xl text-gray-300 mt-4 leading-relaxed transition-transform duration-300 hover:scale-105">{post.content}</p>
+            <p className="text-center text-lg md:text-xl lg:text-2xl text-gray-300 mt-4 leading-relaxed transition-transform duration-300 hover:scale-105">
+              {post.content}
+            </p>
           )}
           {editingPostId === post.id && (
             <button
