@@ -8,6 +8,7 @@ import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
 
+
 function PublicPost({
   id,
   userName,
@@ -25,6 +26,7 @@ function PublicPost({
   commentUpdate,
   likedCommentUpdate,
   finalComments,
+  Filters,
 }) {
   const imgStyle = {
     width: "75px",
@@ -338,7 +340,12 @@ function PublicPost({
     });
   };
 
+  
+
   return (
+<>
+
+
     <div
       className={` flex flex-col lg:w-3/4 xl:w-2/3 shadow-lg border-4 border-gray-200 border-dotted border-gray-800 justify-center items-center mt-6 mx-auto w-full h-full overflow-hidden max-w-full  p-6`}
     >
@@ -547,6 +554,7 @@ function PublicPost({
         </div>
       )}
     </div>
+    </>
   );
 }
 

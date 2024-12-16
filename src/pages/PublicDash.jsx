@@ -2,15 +2,61 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PublicPost from "../components/PublicPost";
 import Comment from "../components/Comment";
-
+import Filters from "../components/FilterPosts";
 
 function PublicDash() {
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
- 
 
-  const defaultImg = './avatar.png';
+  const [allPosts, setAllPosts] = useState([]);
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState(allPosts);
+
+  const topics = [
+    "React",
+    "JavaScript",
+    "Node",
+    "CSS",
+    "HTML",
+    "Python",
+    "Data Structures",
+    "Algorithms",
+    "TypeScript",
+    "GraphQL",
+    "Redux",
+    "Vue",
+    "Angular",
+    "Next.js",
+    "Express",
+    "MongoDB",
+    "SQL",
+    "NoSQL",
+    "Web Security",
+    "Testing",
+  ];
+
+  const handleTopicChange = (topic) => {
+    const updatedTopics = selectedTopics.includes(topic) // Check if topic is already selected
+      ? selectedTopics.filter((t) => t !== topic) // Remove topic if already selected
+      : [...selectedTopics, topic]; // Add topic if not selected
+    setSelectedTopics(updatedTopics);
+
+    // Filter posts based on updated topics
+    const filtered =
+      updatedTopics.length > 0 // if there are selected topics
+        ? allPosts.filter(
+            (
+              post // apply filters to posts
+            ) =>
+              post.topics.some((postTopic) => updatedTopics.includes(postTopic))
+          )
+        : allPosts; // Show all posts if no topics are selected
+
+    setFilteredPosts(filtered);
+  };
+
+  const defaultImg = "./avatar.png";
 
   useEffect(() => {
     const fetchAllPosts = async () => {
@@ -20,9 +66,13 @@ function PublicDash() {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-       
+
         console.log("Fetched post data:", data);
-        const sortPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setAllPosts(data);
+        setFilteredPosts(data); // Set filtered posts to all posts initially
+        const sortPosts = data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
         setPost(sortPosts);
       } catch (error) {
         setError(error);
@@ -41,7 +91,9 @@ function PublicDash() {
         post.id === id ? { ...post, likes: newLikeCount } : post
       );
       // Sort posts by timestamp in descending order
-      return updatedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return updatedPosts.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
     });
   };
 
@@ -51,9 +103,11 @@ function PublicDash() {
         post.id === id ? { ...post, dislikes: newDislikeCount } : post
       );
       // Sort posts by timestamp in descending order
-      return updatedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return updatedPosts.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
     });
-  }
+  };
 
   const handleCommentUpdate = (id, newCommentCount) => {
     setPost((prevPosts) => {
@@ -61,9 +115,11 @@ function PublicDash() {
         post.id === id ? { ...post, comments: newCommentCount } : post
       );
       // Sort posts by timestamp in descending order
-      return updatedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return updatedPosts.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
     });
-  }
+  };
 
   const handleLikedCommentUpdate = (id, newLikedCommentCount) => {
     setPost((prevPosts) => {
@@ -73,8 +129,8 @@ function PublicDash() {
       // Sort posts by most liked comments in descending order
       return updatedPosts.sort((a, b) => b.likedComments - a.likedComments);
     });
-  }
- 
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -88,40 +144,47 @@ function PublicDash() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
-      {post &&
-        post.map((post) => (
-          <PublicPost
-            key={post.id}
-            id={post.id}
-            userId={post.User.id}
-            userName={post.User.userName}
-            title={post.title}
-            content={post.content}
-            imageUrl={
-              post.User?.profilePic ? (
-                post.User.profilePic
-              ) : (
-                defaultImg
-              )
-            }
-            likes={post.likes}
-            dislikes={post.dislikes}
-            createdAt={post.createdAt}
-            finalComments={post.Comments.sort((a, b) => b.likes - a.likes)}
-            topics={post.User.topics}
-            topicsPosts={post.topics}
-            likeUpdate={handleLikeUpdate}
-            dislikeUpdate={handleDislikeUpdate}
-            commentUpdate={handleCommentUpdate}
-            likedCommentUpdate={handleLikedCommentUpdate}
-          />
-         
-        ))}
-        
-    </div>
+    <>
+      <div className="min-h-screen flex flex-col items-center">
+        <div className="bg-gray-900 text-gray-200">
+          <div className="container mx-auto py-6">
+            <Filters
+              topics={topics}
+              selectedTopics={selectedTopics}
+              handleTopicChange={handleTopicChange}
+            />
+          </div>
+        </div>
+        {
+          // Renders al posts or filtered posts based on selected topics
+          filteredPosts.map((post) => (
+            <PublicPost
+              key={post.id}
+              id={post.id}
+              userId={post.User.id}
+              userName={post.User.userName}
+              title={post.title}
+              content={post.content}
+              imageUrl={
+                post.User?.profilePic ? post.User.profilePic : defaultImg
+              }
+              likes={post.likes}
+              dislikes={post.dislikes}
+              createdAt={post.createdAt}
+              finalComments={post.Comments.sort((a, b) => b.likes - a.likes)}
+              topics={post.User.topics}
+              topicsPosts={post.topics}
+              likeUpdate={handleLikeUpdate}
+              dislikeUpdate={handleDislikeUpdate}
+              commentUpdate={handleCommentUpdate}
+              likedCommentUpdate={handleLikedCommentUpdate}
+              allPosts={allPosts}
+            />
+          ))
+        }
+      </div>
+    </>
   );
 }
 
 export default PublicDash;
-
