@@ -6,6 +6,7 @@ import Modal from "../components/Modal";
 import { UserContext } from "../components/UserContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import YTPreview from "../components/YTPreview";
 
 function AllMyPosts(user) {
   // * carry user data from context
@@ -435,6 +436,7 @@ function AllMyPosts(user) {
           ) : (
             <p className="text-center text-lg md:text-xl lg:text-2xl text-gray-300 mt-4 leading-relaxed transition-transform duration-300 hover:scale-105">
               {post.content}
+              <YTPreview content={post.content} />
             </p>
           )}
           {editingPostId === post.id && (

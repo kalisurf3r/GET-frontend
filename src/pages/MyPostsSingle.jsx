@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import YTPreview from "../components/YTPreview";
 
 function MyPostsSingle() {
   // * Get post id from URL
@@ -88,7 +89,9 @@ function MyPostsSingle() {
 
           <p className="text-center text-lg md:text-xl lg:text-2xl text-gray-300 mt-4 leading-relaxed tracking-wide px-4 lg:px-8 transition-transform duration-300 hover:scale-105">
             {post.content}
+            <YTPreview content={post.content} />
           </p>
+
           <ul>
             <li></li>
           </ul>

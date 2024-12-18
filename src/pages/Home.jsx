@@ -7,6 +7,7 @@ import { set } from "@cloudinary/url-gen/actions/variable";
 import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 import TopicPosts from "../components/TopicPosts";
+// import YouTubePreview from "../components/YTPreview";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,6 +46,7 @@ function Home() {
   const [note, setNote] = useState("");
   const [title, setTitle] = useState("");
   const [topics, setTopics] = useState([]);
+  const [oEmbedData, setOEmbedData] = useState(null);
 
   // * function to create a post
   const makePost = async () => {
@@ -83,6 +85,7 @@ function Home() {
         setNote("");
         setTitle("");
         setTopics([]);
+        setOEmbedData(null);
         window.location.reload();
       } else {
         const errorText = await response.text();
@@ -96,10 +99,66 @@ function Home() {
   // * Filter out bad words & sanitize inputs
   const filter = new Filter();
 
+  const fetchOEmbed = async (url) => {
+    console.log("fetchOEmbed called with URL:", url);
+    try {
+      // Regular expression to extract YouTube video ID
+      const urlRegex =
+        /(https?:\/\/(?:www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+))/;
+      const match = url.match(urlRegex);
+  
+      if (!match || !match[3]) {
+        console.error("Invalid YouTube URL:", url);
+        return;
+      }
+  
+      const videoId = match[3]; // Extract video ID
+      const validUrl = `https://www.youtube.com/watch?v=${videoId}`; // Format URL
+  
+      // Construct the oEmbed API endpoint
+      const oEmbedUrl = `https://www.youtube.com/oembed?url=${validUrl}&format=json`;
+  
+      console.log("Fetching oEmbed URL:", oEmbedUrl); // Debugging
+  
+      // Fetch oEmbed data
+      const response = await fetch(oEmbedUrl);
+  
+      if (response.ok) {
+        const data = await response.json();
+        setOEmbedData(data); // Update state with oEmbed data
+        console.log("oEmbed Data:", data);
+      } else {
+        console.error(
+          `Failed to fetch oEmbed data. Status: ${response.status}, URL: ${oEmbedUrl}`
+        );
+        setOEmbedData(null);
+        alert("The video might be restricted or unavailable.");
+      }
+    } catch (error) {
+      console.error("Error fetching oEmbed data:", error);
+      setOEmbedData(null);
+      alert("An error occurred. Please check the video link.");
+    }
+  };
+
   const handleTextareaChange = (event) => {
     const sanitizedNote = DOMPurify.sanitize(event.target.value);
     const filteredNote = filter.clean(sanitizedNote);
     setNote(filteredNote);
+
+    // Detect YouTube link
+    const urlRegex = /(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+)/;
+    const match = filteredNote.match(urlRegex);
+
+    console.log("Match found:", match);
+
+    if (match) {
+      console.log("Calling fetchOEmbed with URL:", match[0]);
+      fetchOEmbed(match[0]);
+    } else {
+      console.log("No valid YouTube URL detected.");
+      setOEmbedData(null);
+    }
   };
 
   const handleTitleChange = (e) => {
@@ -140,6 +199,27 @@ function Home() {
                 onChange={handleTextareaChange}
                 style={{ resize: "none" }}
               ></textarea>
+              {/* oEmbed Preview */}
+              {oEmbedData && (
+                <div className="mt-4 p-4 bg-gray-800 rounded-lg shadow-lg">
+                  <h3 className="text-2xl font-bold mb-2">
+                    {oEmbedData.title}
+                  </h3>
+                  <img
+                    src={oEmbedData.thumbnail_url}
+                    alt={oEmbedData.title}
+                    className="w-full h-auto rounded-lg mb-4"
+                  />
+                  <a
+                    href={oEmbedData.url || note.match(/https?:\/\/\S+/)?.[0]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-500 underline text-lg"
+                  >
+                    Watch on YouTube
+                  </a>
+                </div>
+              )}
             </div>
 
             <TopicPosts setTopics={setTopics} />

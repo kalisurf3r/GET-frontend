@@ -7,6 +7,7 @@ import "./animation.css";
 import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
+import YTPreview from "./YTPreview";
 
 // * all props are passed from PublicDash.jsx
 function PublicPost({
@@ -362,6 +363,7 @@ function PublicPost({
               <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed">
                 {content}
               </p>
+              <YTPreview content={content} />
             </div>
 
             <div className="votes relative mt-10 w-full flex items-center justify-between px-6">
