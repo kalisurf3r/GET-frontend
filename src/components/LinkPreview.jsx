@@ -41,12 +41,12 @@ const LinkPreview = ({ url, endpoint = "http://localhost:3004/posts/proxy/previe
     return <p className="text-gray-400">Loading preview...</p>;
   }
 
-  if (error) {
-    return <p className="text-red-500">{error}</p>;
-  }
+  // if (error) {
+  //   return <p className="text-red-500">{error}</p>;
+  // }
 
   if (!linkPreview) {
-    return null; // Don't render anything if there's no preview or error
+    return null; 
   }
 
   return (
