@@ -46,7 +46,7 @@ const YTPreview = ({ content }) => {
       console.log("Sanitized Content:", sanitizedContent);
 
       const urlRegex =
-      /(https?:\/\/(?:www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]+))/g;
+  /(https?:\/\/(?:www\.)?(youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+))(?:\?.*)?/g;
       const matches = [...sanitizedContent.matchAll(urlRegex)];
 
       console.log("Regex matches:", matches);

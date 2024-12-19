@@ -7,7 +7,10 @@ import { set } from "@cloudinary/url-gen/actions/variable";
 import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 import TopicPosts from "../components/TopicPosts";
-// import YouTubePreview from "../components/YTPreview";
+import YouTubePreview from "../components/YTPreview";
+
+// todo: work on previews
+import { getLinkPreview } from "link-preview-js";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,7 +49,10 @@ function Home() {
   const [note, setNote] = useState("");
   const [title, setTitle] = useState("");
   const [topics, setTopics] = useState([]);
+  // * for youtube video preview
   const [oEmbedData, setOEmbedData] = useState(null);
+  // * for any link preview
+  const [linkPreview, setLinkPreview] = useState(null);
 
   // * function to create a post
   const makePost = async () => {
@@ -141,17 +147,41 @@ function Home() {
     }
   };
 
+  // * get link preview
+  const getPreview = async (url) => {
+    try {
+      console.log("Fetching preview for URL:", url);
+  
+      const response = await fetch(`http://localhost:3004/posts/proxy/preview?url=${encodeURIComponent(url)}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch preview. Status: ${response.status}`);
+      }
+  
+      const preview = await response.json();
+      setLinkPreview(preview); // Update state with preview data
+      console.log("Preview:", preview);
+    } catch (error) {
+      console.error("Error fetching link preview:", error);
+      setLinkPreview(null);
+    }
+  };
+
+
   const handleTextareaChange = (event) => {
     const sanitizedNote = DOMPurify.sanitize(event.target.value);
     const filteredNote = filter.clean(sanitizedNote);
     setNote(filteredNote);
 
-    // Detect YouTube link
-    const urlRegex = /(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+)/;
+    // * Detect YouTube link
+    const urlRegex =
+  /(https?:\/\/(?:www\.)?(youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+))(?:\?.*)?/g;
     const match = filteredNote.match(urlRegex);
 
-    console.log("Match found:", match);
+   // * detect any link
+   const urlRegex2 = /(https?:\/\/\S+)/g;
+    const match2 = filteredNote.match(urlRegex2);
 
+    // * for youtube video preview
     if (match) {
       console.log("Calling fetchOEmbed with URL:", match[0]);
       fetchOEmbed(match[0]);
@@ -159,6 +189,16 @@ function Home() {
       console.log("No valid YouTube URL detected.");
       setOEmbedData(null);
     }
+
+    // * for any link preview
+    if (match2) {
+      console.log("Calling getPreview with URL:", match2[0]);
+      getPreview(match2[0]);
+    } else {
+      console.log("No valid URL detected.");
+      setLinkPreview(null);
+    }
+
   };
 
   const handleTitleChange = (e) => {
@@ -218,6 +258,32 @@ function Home() {
                   >
                     Watch on YouTube
                   </a>
+                </div>
+              )}
+              {/* Link Preview */}
+              {linkPreview && (
+                <div className="mt-4 p-4 bg-gray-800 rounded-lg shadow-lg">
+                  <h3 className="text-2xl font-bold mb-2">
+                    {linkPreview.title}
+                  </h3>
+                  {linkPreview.image && (
+                    <img
+                      src={linkPreview.image}
+                      alt={linkPreview.title}
+                      className="w-full h-auto rounded-lg mb-4"
+                    />
+                  )}
+                  <a
+                    href={linkPreview.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-500 underline text-lg"
+                  >
+                    {linkPreview.url}
+                  </a>
+                  <p className="text-gray-400 text-lg mt-2">
+                    {linkPreview.description}
+                  </p>
                 </div>
               )}
             </div>

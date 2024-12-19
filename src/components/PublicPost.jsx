@@ -8,6 +8,7 @@ import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
 import YTPreview from "./YTPreview";
+import LinkPreview from "./LinkPreview";
 
 // * all props are passed from PublicDash.jsx
 function PublicPost({
@@ -363,7 +364,12 @@ function PublicPost({
               <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed">
                 {content}
               </p>
-              <YTPreview content={content} />
+              <div className="mt-4 w-full">
+                {/* <YTPreview content={content} /> */}
+                <div className="mt-2 ml-14">
+                  <LinkPreview url={content} />
+                </div>
+              </div>
             </div>
 
             <div className="votes relative mt-10 w-full flex items-center justify-between px-6">

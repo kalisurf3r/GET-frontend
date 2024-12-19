@@ -7,6 +7,7 @@ import { UserContext } from "../components/UserContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import YTPreview from "../components/YTPreview";
+import LinkPreview from "../components/LinkPreview";
 
 function AllMyPosts(user) {
   // * carry user data from context
@@ -107,7 +108,7 @@ function AllMyPosts(user) {
 
   // * restrict scrolling when modal is open
   useEffect(() => {
-    if (setShowSettings) {
+    if (showSettings) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -262,7 +263,7 @@ function AllMyPosts(user) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center overflow-y-auto">
       <div className="settings mt-2 pl-8 w-full flex justify-start">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -382,6 +383,7 @@ function AllMyPosts(user) {
           </Modal>
         )}
       </div>
+      <div className="flex flex-col items-center w-full max-w-4xl overflow-hidden">
       {post.map((post) => (
         <div
           key={post.id}
@@ -434,10 +436,12 @@ function AllMyPosts(user) {
               className="w-full py-2 px-4 text-base text-gray-900 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 placeholder-gray-400 resize-none "
             />
           ) : (
+            <div>
             <p className="text-center text-lg md:text-xl lg:text-2xl text-gray-300 mt-4 leading-relaxed transition-transform duration-300 hover:scale-105">
               {post.content}
-              <YTPreview content={post.content} />
             </p>
+              <LinkPreview url={post.content} />
+              </div>
           )}
           {editingPostId === post.id && (
             <button
@@ -449,6 +453,7 @@ function AllMyPosts(user) {
           )}
         </div>
       ))}
+    </div>
     </div>
   );
 }
