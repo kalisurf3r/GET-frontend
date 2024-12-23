@@ -334,14 +334,15 @@ function PublicPost({
         className={` flex flex-col lg:w-3/4 xl:w-2/3 shadow-lg border-4 border-gray-200 border-dotted border-gray-800 justify-center items-center mt-6 mx-auto w-full h-full overflow-hidden max-w-full  p-6`}
       >
         <div className="border-2 border-gray-200 flex items-center px-4 py-6 w-full">
-          <div className="ppic mr-2 flex flex-col items-center sm:flex-row sm:items-center border-r-2 border-gray-200">
+          <div className="ppic mr-2 flex flex-col sm:flex-row sm:items-center sm:items-center border-r-2 border-gray-200">
             <img
               src={imageUrl}
               alt="profile"
               className="mr-1 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full cursor-pointer"
               onClick={goProfile}
             />
-            <h3 className="text-center mr-2 mt-4 text-lg md:text-xl lg:text-2xl font-semibold text-gray-200">
+            <h3 className="text-center mr-2 mt-4 text-lg md:text-xl lg:text-2xl font-semibold text-gray-200 "
+             style={{ maxWidth: '150px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {userName}
             </h3>
           </div>
@@ -451,7 +452,9 @@ function PublicPost({
           style={{ maxHeight: "600px", overflowY: "auto" }}
         >
           {commentsVisible && (
-            <div className="mt-2 w-full sm:w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 2xl:w-7/12 p-6 rounded-lg shadow-lg">
+            <div className="mt-2 w-full sm:w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 2xl:w-7/12 p-6 rounded-lg shadow-lg flex justify-center items-center"
+            style={{ maxHeight: "600px", overflowY: "auto", wordWrap: "break-word" }}>
+
               <ul className="space-y-4">
                 <TransitionGroup>
                   {finalComments.slice(-5).map((comment, index) => (
@@ -474,13 +477,13 @@ function PublicPost({
                           <h4 className="font-semibold text-gray-200 text-lg md:text-xl lg:text-2xl">
                             {comment.User.userName}
                           </h4>
-                          <p className="text-base text-gray-200 md:text-lg lg:text-xl text-gray-900 leading-relaxed">
+                          <p className="text-base text-gray-200 md:text-lg lg:text-xl leading-relaxed">
                             {comment.content}
                           </p>
                         </div>
 
                         <div className="votes flex items-center space-x-2">
-                          <span className="text-lg text-gray-200 md:text-xl lg:text-2xl text-gray-900">
+                          <span className="text-lg text-gray-200 md:text-xl lg:text-2xl ">
                             {comLikes[index]}
                           </span>
                           <button
