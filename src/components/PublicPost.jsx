@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import YTPreview from "./YTPreview";
 import LinkPreview from "./LinkPreview";
 
+
 // * all props are passed from PublicDash.jsx
 function PublicPost({
   id,
