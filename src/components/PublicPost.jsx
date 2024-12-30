@@ -173,11 +173,15 @@ function PublicPost({
       const sanitizedComment = DOMPurify.sanitize(filteredComment);
 
       const payload = {
-        user_id: user.id,
+        user_id: user.user.id,
         post_id: id,
         date: new Date().toISOString(),
         content: sanitizedComment,
+        likes: 0,
       };
+
+      console.log("Comment payload:", payload);
+      
 
       const response = await fetch(`http://localhost:3004/comments/`, {
         method: "POST",
