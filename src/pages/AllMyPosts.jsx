@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import YTPreview from "../components/YTPreview";
 import LinkPreview from "../components/LinkPreview";
 import DELposts from "../components/DELposts";
+import BASE_URL from "../components/Config";
 
 function AllMyPosts(user) {
   // * carry user data from context
@@ -33,7 +34,7 @@ function AllMyPosts(user) {
 
         const id = user.user.id;
 
-        const response = await fetch(`http://localhost:3004/posts/user/${id}`);
+        const response = await fetch(`${BASE_URL}/posts/user/${id}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -75,7 +76,7 @@ function AllMyPosts(user) {
   const handleSaveClick = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:3004/posts/${id}`, {
+      const response = await fetch(`${BASE_URL}/posts/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +153,7 @@ function AllMyPosts(user) {
     const id = user.user.id;
 
     try {
-      const response = await fetch(`http://localhost:3004/users/${id}`);
+      const response = await fetch(`${BASE_URL}/users/${id}`);
       if (!response.ok) {
         console.error("Response status:", response.status);
         console.error("Response body:", await response.text());
@@ -222,7 +223,7 @@ function AllMyPosts(user) {
         profilePic: userData.profilePic,
       });
 
-      const response = await fetch(`http://localhost:3004/users/${id}`, {
+      const response = await fetch(`${BASE_URL}/users/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

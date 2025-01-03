@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 import TopicSelector from "../components/TopicSelector";
+import BASE_URL from "../components/Config";
 
 function Register() {
   // * filter to check for profanity
@@ -63,7 +64,7 @@ function Register() {
     }
     // * user registration
     try {
-      const response = await fetch("http://localhost:3004/users/signup", {
+      const response = await fetch(`${BASE_URL}/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +88,7 @@ function Register() {
   // * fetch all users to check if username already exists
   const getAllUsers = async () => {
     try {
-      const response = await fetch("http://localhost:3004/users");
+      const response = await fetch(`${BASE_URL}/users`);
       const data = await response.json();
       return Array.isArray(data) ? data : [];
       console.log(data);

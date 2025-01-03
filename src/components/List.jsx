@@ -1,6 +1,7 @@
 import { set } from "@cloudinary/url-gen/actions/variable";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import BASE_URL from "./Config";
 
 function List() {
   // * states to store user data
@@ -24,7 +25,7 @@ function List() {
         const userId = user.user.id;
         console.log("Extracted userId:", userId);
 
-        const response = await fetch(`http://localhost:3004/users/${userId}`);
+        const response = await fetch(`${BASE_URL}/users/${userId}`);
 
         if (!response.ok) {
           console.error("Failed to fetch user data:", response.statusText);
@@ -53,7 +54,7 @@ function List() {
       try {
         console.log("userId in useEffect:", userId);
         const response = await fetch(
-          `http://localhost:3004/posts/user/${userId}`
+          `${BASE_URL}/posts/user/${userId}`
         );
 
         if (!response.ok) {

@@ -6,6 +6,7 @@ import "../components/animation.css";
 import sendEmail from "../components/Sendgrid";
 import Modal from "../components/Modal";
 import "../components/modal.css";
+import BASE_URL from "../components/Config";
 
 function ViewProfile() {
   // * fetch user data from location state
@@ -34,7 +35,7 @@ function ViewProfile() {
         const id = user.user.id;
 
         try {
-          const response = await fetch(`http://localhost:3004/users/${id}`);
+          const response = await fetch(`${BASE_URL}/users/${id}`);
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
@@ -57,7 +58,7 @@ function ViewProfile() {
       const getPosts = async () => {
         try {
           const response = await fetch(
-            `http://localhost:3004/posts/user/${userData.userId}`
+            `${BASE_URL}/posts/user/${userData.userId}`
           );
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -80,7 +81,7 @@ function ViewProfile() {
       const getComments = async (postId) => {
         try {
           const response = await fetch(
-            `http://localhost:3004/comments/${postId}`
+            `${BASE_URL}/comments/${postId}`
           );
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -127,7 +128,7 @@ function ViewProfile() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3004/users/${id}/subscriptions`,
+        `${BASE_URL}/users/${id}/subscriptions`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -155,7 +156,7 @@ function ViewProfile() {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          `http://localhost:3004/users/subscribe/${subscribedTo}`,
+          `${BASE_URL}/users/subscribe/${subscribedTo}`,
           {
             method: "POST",
             headers: {
@@ -187,7 +188,7 @@ function ViewProfile() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3004/users/unsubscribe/${subscribedTo}`,
+        `${BASE_URL}/users/unsubscribe/${subscribedTo}`,
         {
           method: "DELETE",
           headers: {

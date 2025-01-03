@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
+import BASE_URL from "./Config";
 
 function DELposts({ postId, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -8,7 +9,7 @@ function DELposts({ postId, onDelete }) {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`http://localhost:3004/posts/${postId}`, {
+      const response = await fetch(`${BASE_URL}/posts/${postId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +80,7 @@ function DELposts({ postId, onDelete }) {
           <div className="relative z-50 bg-gray-900  p-8 rounded-lg shadow-xl w-full sm:w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto text-gray-100 transform scale-95 transition-transform duration-300 ease-in-out min-h-[50vh] max-h-[90vh] overflow-y-auto">
             {/* Cancel Button at Top Left */}
             <button
-              onClick={() => isModalOpen(false)}
+              onClick={() => setIsModalOpen(false)}
               className="absolute top-4 left-4 text-gray-400 hover:text-gray-200 transition-all duration-300 transform hover:scale-110"
             >
               <svg

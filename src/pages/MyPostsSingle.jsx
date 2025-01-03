@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import YTPreview from "../components/YTPreview";
 import LinkPreview from "../components/LinkPreview";
+import BASE_URL from "../components/Config";
 
 function MyPostsSingle() {
   // * Get post id from URL
@@ -14,7 +15,7 @@ function MyPostsSingle() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`http://localhost:3004/posts/${id}`);
+        const response = await fetch(`${BASE_URL}/posts/${id}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

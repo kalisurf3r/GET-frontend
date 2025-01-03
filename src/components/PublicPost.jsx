@@ -9,6 +9,7 @@ import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
 import YTPreview from "./YTPreview";
 import LinkPreview from "./LinkPreview";
+import BASE_URL from "./Config";
 
 
 // * all props are passed from PublicDash.jsx
@@ -68,7 +69,7 @@ function PublicPost({
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`http://localhost:3004/posts/like/${id}`, {
+      const response = await fetch(`${BASE_URL}/posts/like/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +102,7 @@ function PublicPost({
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:3004/posts/dislike/${id}`,
+        `${BASE_URL}/posts/dislike/${id}`,
         {
           method: "PUT",
           headers: {
@@ -183,7 +184,7 @@ function PublicPost({
       console.log("Comment payload:", payload);
       
 
-      const response = await fetch(`http://localhost:3004/comments/`, {
+      const response = await fetch(`${BASE_URL}/comments/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -230,7 +231,7 @@ function PublicPost({
 
   const loadComments = async () => {
     try {
-      const response = await fetch(`http://localhost:3004/comments/${id}`);
+      const response = await fetch(`${BASE_URL}/comments/${id}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -277,7 +278,7 @@ function PublicPost({
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:3004/comments/like/${commentId}`,
+        `${BASE_URL}/comments/like/${commentId}`,
         {
           method: "PUT",
           headers: {

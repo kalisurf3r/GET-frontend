@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UserContext } from "../components/UserContext";
+import BASE_URL from "../components/Config";
 
 function Login(props) {
   // * start using context
@@ -22,7 +23,7 @@ function Login(props) {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3004/users/login", {
+      const response = await fetch(`${BASE_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

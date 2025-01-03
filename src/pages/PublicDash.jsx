@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PublicPost from "../components/PublicPost";
-
 import Filters from "../components/FilterPosts";
+import BASE_URL from "../components/Config";
 
 function PublicDash() {
 
@@ -69,7 +69,7 @@ function PublicDash() {
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
-        const response = await fetch("http://localhost:3004/posts");
+        const response = await fetch(`${BASE_URL}/posts`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

@@ -8,9 +8,8 @@ import { Filter } from "bad-words";
 import DOMPurify from "dompurify";
 import TopicPosts from "../components/TopicPosts";
 import YouTubePreview from "../components/YTPreview";
-
-// todo: work on previews
 import { getLinkPreview } from "link-preview-js";
+import BASE_URL from "../components/Config";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,7 +67,7 @@ function Home() {
 
       console.log("Using token:", token);
 
-      const response = await fetch("http://localhost:3004/posts/", {
+      const response = await fetch(`${BASE_URL}/posts/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +151,7 @@ function Home() {
     try {
       console.log("Fetching preview for URL:", url);
   
-      const response = await fetch(`http://localhost:3004/posts/proxy/preview?url=${encodeURIComponent(url)}`);
+      const response = await fetch(`${BASE_URL}/posts/proxy/preview?url=${encodeURIComponent(url)}`);
       if (!response.ok) {
         throw new Error(`Failed to fetch preview. Status: ${response.status}`);
       }

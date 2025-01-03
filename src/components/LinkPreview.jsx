@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import BASE_URL from "./Config";
 
-const LinkPreview = ({ url, endpoint = "http://localhost:3004/posts/proxy/preview", className = "" }) => {
+const LinkPreview = ({ url, endpoint = `${BASE_URL}/posts/proxy/preview`, className = "" }) => {
   const [linkPreview, setLinkPreview] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
