@@ -28,7 +28,7 @@ function DELposts({ postId, onDelete }) {
       }
 
       const data = await response.json();
-      isModalOpen(false);
+      setIsModalOpen(false);
       window.location.reload();
       console.log("Post deleted:", data);
 
