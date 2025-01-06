@@ -11,7 +11,6 @@ import YTPreview from "./YTPreview";
 import LinkPreview from "./LinkPreview";
 import BASE_URL from "./Config";
 
-
 // * all props are passed from PublicDash.jsx
 function PublicPost({
   id,
@@ -101,16 +100,13 @@ function PublicPost({
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `${BASE_URL}/posts/dislike/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${BASE_URL}/posts/dislike/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -182,7 +178,6 @@ function PublicPost({
       };
 
       console.log("Comment payload:", payload);
-      
 
       const response = await fetch(`${BASE_URL}/comments/`, {
         method: "POST",
@@ -277,16 +272,13 @@ function PublicPost({
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `${BASE_URL}/comments/like/${commentId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${BASE_URL}/comments/like/${commentId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!response.ok) {
         const errorText = await response.text();
         console.error(
@@ -337,117 +329,140 @@ function PublicPost({
   return (
     <>
       <div
-        className={` flex flex-col lg:w-3/4 xl:w-2/3 shadow-lg border-4 border-gray-200 border-dotted border-gray-800 justify-center items-center mt-6 mx-auto w-full h-full overflow-hidden max-w-full  p-6`}
+        className={`flex flex-col items-center justify-center w-full max-w-screen-sm lg:max-w-screen-md shadow-lg border-4 border-gray-200 border-dotted border-gray-800 mx-auto p-6 overflow-hidden`}
       >
         <div className="border-2 border-gray-200 flex items-center px-4 py-6 w-full">
-          <div className="ppic mr-2 flex flex-col sm:flex-row sm:items-center sm:items-center border-r-2 border-gray-200">
+          <div className="ppic w-full flex flex-col sm:flex-row sm:items-center sm:items-center border-r-2 border-gray-200">
             <img
               src={imageUrl}
               alt="profile"
               className="mr-1 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full cursor-pointer"
               onClick={goProfile}
             />
-            <h3 className="text-center mr-2 mt-4 text-lg md:text-xl lg:text-2xl font-semibold text-gray-200 "
-             style={{ maxWidth: '150px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <h3
+              className="text-center text-lg md:text-xl lg:text-2xl font-semibold text-gray-200 overflow-hidden"
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxWidth: "100%", // Ensures it adapts to the container width
+              }}
+            >
               {userName}
             </h3>
           </div>
 
-          <div className="flex flex-col flex-grow pl-4">
-            <div className="title border-b-2 border-gray-200  pb-2">
-              <h1 className="text-lg text-gray-200 md:text-xl lg:text-2xl font-bold">
+          <div className="flex flex-col flex-grow pr-2">
+            <div className="title border-b-2 border-gray-200 w-full pb-2 px-4">
+              <h1
+                className="text-lg md:text-xl lg:text-2xl font-bold text-gray-200 tracking-wide text-center break-words"
+                style={{
+                  overflowWrap: "break-word",
+                  wordBreak: "break-word",
+                }}
+              >
                 {title}
               </h1>
-              <h1 className="text-lg mt-4 md:text-xl lg:text-2xl font-bold text-gray-200 tracking-wide text-center">
-                {" "}
+              <h1
+                className="text-lg mt-4 md:text-xl lg:text-2xl font-bold text-gray-200 tracking-wide text-center break-words"
+                style={{
+                  overflowWrap: "break-word",
+                  wordBreak: "break-word",
+                  maxWidth: "100%", // Prevent content overflow
+                }}
+              >
                 Topics:{" "}
-                {Array.isArray(topicsPosts)
-                  ? topicsPosts.join(", ")
-                  : "No topics"}
+                <span className="inline-block max-w-full break-words">
+                  {Array.isArray(topicsPosts)
+                    ? topicsPosts.join(", ")
+                    : "No topics"}
+                </span>
               </h1>
             </div>
 
-            <div className="content  mt-4">
+            <div className="content  mt-4 w-full max-w-screen-sm px-4">
               <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed">
                 {content}
               </p>
               <div className="mt-4 w-full">
                 {/* <YTPreview content={content} /> */}
-                <div className="mt-2 ml-14">
+                <div className="mt-2">
                   <LinkPreview url={content} />
                 </div>
               </div>
             </div>
 
-            <div className="votes relative mt-10 w-full flex items-center justify-between px-6">
-              <div className="flex items-center">
-                <span className="like  mr-2 text-gray-200 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
-                  {likes}
-                </span>
-                <button
-                  className={`like-button ${isLiked ? "disabled" : ""}`}
-                  disabled={isLiked}
-                  onClick={handleLike}
-                  title="Like"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill={isLiked ? "blue" : "currentColor"}
-                    className="bi bi-hand-thumbs-up-fill text-gray-300 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 transition-transform duration-300 hover:scale-150"
-                    viewBox="0 0 16 16"
+            <div className="votes-container w-full flex justify-center items-center">
+              <div className="votes relative mt-10 w-full flex items-center justify-between px-2 sm:flex-nowrap">
+                <div className="flex items-center">
+                  <span className="like  mr-2 text-gray-200 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+                    {likes}
+                  </span>
+                  <button
+                    className={`like-button ${isLiked ? "disabled" : ""}`}
+                    disabled={isLiked}
+                    onClick={handleLike}
+                    title="Like"
                   >
-                    <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z" />
-                  </svg>
-                </button>
-              </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill={isLiked ? "blue" : "currentColor"}
+                      className="bi bi-hand-thumbs-up-fill text-gray-300 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 transition-transform duration-300 hover:scale-150"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z" />
+                    </svg>
+                  </button>
+                </div>
 
-              <div className="flex items-center">
-                <span className="dislike ml-2 mr-2 text-gray-200 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
-                  {dislikes}
-                </span>
-                <button
-                  className=" dislike-button ${isDisliked ? 'disabled' : ''}"
-                  disabled={isDisliked}
-                  onClick={handleDislike}
-                  title="Dislike"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill={isDisliked ? "red" : "currentColor"}
-                    className="bi bi-hand-thumbs-down-fill text-gray-300 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 transition-transform duration-300 hover:scale-150"
-                    viewBox="0 0 16 16"
+                <div className="flex items-center">
+                  <span className="dislike ml-2 mr-2 text-gray-200 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+                    {dislikes}
+                  </span>
+                  <button
+                    className=" dislike-button ${isDisliked ? 'disabled' : ''}"
+                    disabled={isDisliked}
+                    onClick={handleDislike}
+                    title="Dislike"
                   >
-                    <path d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.38 1.38 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51q.205.03.443.051c.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.9 1.9 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2 2 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.2 3.2 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.8 4.8 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591" />
-                  </svg>
-                </button>
-              </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill={isDisliked ? "red" : "currentColor"}
+                      className="bi bi-hand-thumbs-down-fill text-gray-300 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 transition-transform duration-300 hover:scale-150"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.38 1.38 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51q.205.03.443.051c.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.9 1.9 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2 2 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.2 3.2 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.8 4.8 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591" />
+                    </svg>
+                  </button>
+                </div>
 
-              <div className="flex flex-col items-center sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-4">
-                <button
-                  onClick={toggleComments}
-                  className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 p-3 bg-gray-200 rounded-full shadow-lg hover:bg-gray-300 transition-transform duration-300 hover:scale-125"
-                  title="Show Comments"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="28"
-                    height="28"
-                    fill="currentColor"
-                    className="bi bi-body-text w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
-                    viewBox="0 0 16 16"
+                <div className="flex flex-col items-center sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-4">
+                  <button
+                    onClick={toggleComments}
+                    className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 p-3 bg-gray-200 rounded-full shadow-lg hover:bg-gray-300 transition-transform duration-300 hover:scale-125"
+                    title="Show Comments"
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5m0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"
-                    />
-                  </svg>
-                </button>
-                <button
-                  className="bg-blue-500 text-white py-2 px-4 sm:py-3 sm:px-6 lg:py-4 lg:px-8 rounded-lg shadow-lg font-semibold hover:bg-blue-600 hover:scale-110 transition-transform duration-300 text-sm sm:text-base lg:text-lg"
-                  onClick={handleModalOpen}
-                >
-                  Leave a comment
-                </button>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="28"
+                      height="28"
+                      fill="currentColor"
+                      className="bi bi-body-text w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5m0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    className="bg-blue-500 text-white py-2 px-4 sm:py-3 sm:px-6 lg:py-4 lg:px-8 rounded-lg shadow-lg font-semibold hover:bg-blue-600 hover:scale-110 transition-transform duration-300 text-sm sm:text-base lg:text-lg"
+                    onClick={handleModalOpen}
+                  >
+                    Leave a comment
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -458,9 +473,14 @@ function PublicPost({
           style={{ maxHeight: "600px", overflowY: "auto" }}
         >
           {commentsVisible && (
-            <div className="mt-2 w-full sm:w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 2xl:w-7/12 p-6 rounded-lg shadow-lg flex justify-center items-center"
-            style={{ maxHeight: "600px", overflowY: "auto", wordWrap: "break-word" }}>
-
+            <div
+              className="mt-2 w-full sm:w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 2xl:w-7/12 p-6 rounded-lg shadow-lg flex justify-center items-center"
+              style={{
+                maxHeight: "600px",
+                overflowY: "auto",
+                wordWrap: "break-word",
+              }}
+            >
               <ul className="space-y-4">
                 <TransitionGroup>
                   {finalComments.slice(-5).map((comment, index) => (

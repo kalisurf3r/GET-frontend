@@ -12,7 +12,7 @@ function Footer() {
         © GET. All Rights Reserved. &nbsp;
         <span
           className="italic underline cursor-pointer hover:text-blue-400 transition-colors duration-300"
-          onClick={() => window.open("https://codersjourney.com", "_blank")}
+          onClick={() => window.open("https://github.com/kalisurf3r/GET-frontend", "_blank")}
         >
           For More
         </span>
