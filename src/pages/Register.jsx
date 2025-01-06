@@ -109,7 +109,7 @@ function Register() {
 
   return (
     <>
-      <div className="min-h-screen overflow-y-auto touch-auto">
+      <div className="max-h-screen overflow-y-auto touch-auto">
         <div className="pt-8">
           <h1 className="text-5xl sm:text-6xl text-gray-200 text-center font-extrabold  tracking-wide cursor-default drop-shadow-md transition-colors duration-300 hover:text-green-500 ">
             Register{" "}
