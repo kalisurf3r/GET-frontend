@@ -7,6 +7,7 @@ import sendEmail from "../components/Sendgrid";
 import Modal from "../components/Modal";
 import "../components/modal.css";
 import BASE_URL from "../components/Config";
+import LinkPreview from "../components/LinkPreview";
 
 function ViewProfile() {
   // * fetch user data from location state
@@ -374,6 +375,7 @@ function ViewProfile() {
               </div>
               <p className="text-center mt-4 px-4 mt-2 text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed ">
                 {post.content}
+                <LinkPreview url={post.content} />
               </p>
               <button
                 className="flex justify-content mx-auto mt-4 transition-transform duration-300 hover:scale-125"
