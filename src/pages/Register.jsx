@@ -54,7 +54,7 @@ function Register() {
     }
 
     // * password must be at least 8 characters long and contain at least one letter and one number
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
     if (!passwordPattern.test(password)) {
       alert(
@@ -105,11 +105,13 @@ function Register() {
     setHasMinLength(newPassword.length >= 8);
     setHasLetter(/[A-Za-z]/.test(newPassword));
     setHasNumber(/\d/.test(newPassword));
+
+    
   };
 
   return (
     <>
-      <div className="max-h-screen overflow-y-auto touch-auto">
+      <div className="min-h-screen overflow-y-auto touch-auto">
         <div className="pt-8">
           <h1 className="text-5xl sm:text-6xl text-gray-200 text-center font-extrabold  tracking-wide cursor-default drop-shadow-md transition-colors duration-300 hover:text-green-500 ">
             Register{" "}
