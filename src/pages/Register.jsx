@@ -109,7 +109,7 @@ function Register() {
 
   return (
     <>
-      <div className="min-h-screen overflow-y-auto">
+      <div className="min-h-screen overflow-y-auto touch-auto">
         <div className="pt-8">
           <h1 className="text-5xl sm:text-6xl text-gray-200 text-center font-extrabold  tracking-wide cursor-default drop-shadow-md transition-colors duration-300 hover:text-green-500 ">
             Register{" "}
@@ -243,7 +243,7 @@ function Register() {
                   id="profileImgContainer"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
-                  className="bi bi-person-bounding-box  mt-4 w-30 h-30 sm:w-40 sm:h-40 md:w-40 md:h-40 rounded-full"
+                  className="bi bi-person-bounding-box  mt-4 w-20 h-20 sm:w30 sm:h30 md:w30 md:h30 rounded-full"
                   viewBox="0 0 16 16"
                 >
                   <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5" />
@@ -254,7 +254,7 @@ function Register() {
 
             <TopicSelector setTopics={setTopics} />
 
-            <button className="bg-blue-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl py-3 px-8 sm:px-10 rounded-full mt-8 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-blue-500">
+            <button className="bg-blue-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl py-3 px-8 sm:px-10 rounded-full mt-8 mb-2 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-blue-500">
               Register
               <svg
                 xmlns="http://www.w3.org/2000/svg"
