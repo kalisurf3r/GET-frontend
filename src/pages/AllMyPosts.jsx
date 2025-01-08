@@ -355,7 +355,7 @@ function AllMyPosts(user) {
                       <img
                         id="profileImgContainer"
                         alt="Profile Image Preview"
-                        className="w-20 h-20 mt-4 rounded-full border-2 border-black"
+                        className="w-24 h-24 mt-4 rounded-full border-2 border-black"
                         src={profilePic}
                       />
                     ) : (
