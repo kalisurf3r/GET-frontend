@@ -55,7 +55,7 @@ function Navbar() {
   return (
     <nav className="flex justify-between items-center px-4 sm:px-2 bg-slate-500 ">
       {/* Left side (Home icon and Profile) */}
-      <ul className="flex space-x-6 sm:space-x-4 my-5">
+      <ul className="flex space-x-6 sm:space-x-4 my-5 items-center">
         <li title="Home">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,7 @@ function Navbar() {
               <img
                 src={profilePic}
                 alt="Profile Image"
-                className=" rounded-full w-14 h-14 sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-10 lg:h-10"
+                className=" rounded-full mr-6 w-16 h-16 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-16 lg:h-16"
                 onClick={handleProfile}
               />
             ) : (
@@ -82,7 +82,7 @@ function Navbar() {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
-                  className="bi bi-person-square cursor-pointer transition-transform duration-0 hover:scale-125 w-14 h-14 sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-10 lg:h-10"
+                  className="bi bi-person-square cursor-pointer transition-transform duration-0 hover:scale-125 w-16 h-16 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-14 lg:h-14"
                   viewBox="0 0 16 16"
                   onClick={handleProfile}
                 >
